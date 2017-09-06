@@ -1,0 +1,22 @@
+.pregate-detail-section label {
+	font-weight: bold;
+}
+
+
+.pregate-button-grp button:first-child{
+	margin-right: 30px;
+}
+
+.pregate-button-grp button:last-child{
+	margin-left: 30px;
+}
+
+.pregate-detail-section .edit{
+	display: block;
+}
+
+@media (min-width: 768px){
+	.comments-height{
+		min-height: 235px;
+	}	
+}

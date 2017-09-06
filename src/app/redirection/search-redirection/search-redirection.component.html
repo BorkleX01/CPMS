@@ -1,0 +1,104 @@
+<div class="card car-w-title search-ern-container std-height">
+    <div class="ui-g-12 ui-md-6 no-bottom-pad">
+        <h1>Redirections</h1>
+    </div>
+    <div class="ui-g-12 ui-md-6 text-right no-bottom-pad">
+        <button pButton class="" label="Create Redirection" routerLink="/createredirection" style="width:auto"></button>
+    </div>
+
+    <div class="ui-grid ui-grid-responsive ui-fluid form-group">
+        
+        <div class="ui-grid-row">
+            <div class="ui-g-12 ui-md-12">
+                <p-tabView (onChange)="changeTab($event)" class="primeng-tab">
+                    <p-tabPanel header="Active" [selected]="isActive" >
+                        <div class="card">
+                            <h4>Note:</h4>
+                            <p>Any instructions/filters/notes can go in here. Do we need this?</p>
+                        </div>
+                        <div *ngIf="tableData.length > 0">
+                            <p-dataTable [globalFilter]="opnGf" [value]="tableData" [paginator]="true" [rows]="18" resizableColumns="true" columnResizeMode="fit" [responsive]="true" sortMode="multiple" [contextMenu]="cm" expandableRows="true" selectionMode="single" reorderableColumns="true" #dt1 (onRowDblclick)="viewRedirectionDetail($event)">
+                                <header>
+                                    <div style="text-align: left;">
+                                        <div  style="display: inline-block;">
+                                            <p-multiSelect [options]="columnOptions" [(ngModel)]="selectedColumns" #mSelector></p-multiSelect>
+                                        </div>
+                                        <div  style="display: inline-block;float: right;">
+                                            <input #opnGf type="text" pInputText size="50" placeholder="Search">
+                                        </div>
+                                    </div>
+                                </header>
+                                <template let-row >
+                                    <div class="ui-grid ui-grid-responsive ui-fluid" style="font-size:16px;padding:20px">
+                                        <div class="ui-grid-row" *ngFor="let col of row | keysAndValues">
+                                            <div class="ui-grid-col-2">{{col.key}}</div>
+                                            <div class="ui-grid-col-10">{{col.value}}</div>
+                                        </div>
+                                    </div>
+                                </template>
+                                <p-column *ngFor="let col of selectedColumns" [field]="col" [header]="col" [sortable]="true" [filter]="true" filterMatchMode="contains"></p-column>
+                                <footer>{{totalCount}} Records</footer>
+                            </p-dataTable>
+                        </div>
+                        <p-messages [value]="userMsgs"></p-messages>
+                    </p-tabPanel>
+                    <p-tabPanel header="Inactive" [selected]="!isActive">
+                        <div class="card">
+                            <div class="ui-grid-row">
+                                <div class="ui-g-12 ui-md-2">
+                                    <label >Date Range</label>
+                                </div>
+                                <div class="ui-g-12 ui-md-6">
+                                    <div class="ui-g-12 ui-md-6 ui-g-nopad">
+                                        <p-calendar  placeholder="From Date" [(ngModel)]="filter.FromDate"></p-calendar>
+                                    </div>
+                                    <div class="ui-g-12 ui-md-6 ui-g-nopad" style="padding-left: 5px;">
+                                        <p-calendar  placeholder="To Date" [(ngModel)]="filter.ToDate"></p-calendar>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui-grid-row">
+                                <div class="ui-g-12 ui-md-8 ">
+                                    <button pButton type="button" (click)="applyFilters()" style="width:auto" label="Search" class="pull-right" [disabled]="filter.FromDate.length == 0 || filter.ToDate.length == 0"></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="tableData.length > 0" >
+                            <p-dataTable
+                            [globalFilter]="historyGf"
+                            [value]="tableData"
+                            [paginator]="true"
+                            [rows]="10"
+                            resizableColumns="true"
+                            columnResizeMode="expand"
+                            [responsive]="true"
+                            sortMode="multiple"
+                            [contextMenu]="cm"
+                            expandableRows="true"
+                            selectionMode="single"
+                            reorderableColumns="true" #dt1
+                            (onRowDblclick)="viewInactiveRedirectionDetail($event)">
+                                <header>
+                                    <div style="text-align:left">
+                                        <p-multiSelect [options]="columnOptions" [(ngModel)]="selectedColumns" #mSelector></p-multiSelect>
+                                    </div>
+                                </header>
+                                <template let-row >
+                                    <div class="ui-grid ui-grid-responsive ui-fluid" style="font-size:16px;padding:20px">
+                                        <div class="ui-grid-row" *ngFor="let col of row | keysAndValues">
+                                            <div class="ui-grid-col-2">{{col.key}}</div>
+                                            <div class="ui-grid-col-10">{{col.value}}</div>
+                                        </div>
+                                    </div>
+                                </template>
+                                <p-column *ngFor="let col of selectedColumns" [field]="col" [header]="col" [sortable]="true" [filter]="true" filterMatchMode="contains"></p-column>
+                                <footer>{{totalCount}} Records</footer>
+                            </p-dataTable>
+                        </div>
+                        <p-messages [value]="userMsgs"></p-messages>
+                    </p-tabPanel>
+                </p-tabView>
+            </div>
+        </div>
+    </div>
+</div>

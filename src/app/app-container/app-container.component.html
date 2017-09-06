@@ -1,0 +1,174 @@
+<div [ngClass]="{'layout-wrapper':true,'layout-compact':layoutCompact}">
+  <div [ngClass]="{'layout-container':true,'menu-layout-static':(layoutMode=='static'||layoutMode=='horizontal'),
+									'menu-layout-overlay':(layoutMode=='overlay'),'menu-layout-horizontal':(layoutMode=='horizontal')}">
+    <!-- Top Bar -->
+    <div class="topbar clearfix">
+      <div class="topbar-left">            
+        <div class="logo"></div>
+      </div>
+
+      <div class="topbar-right">
+        <a id="menu-button" href="#">
+          <i></i>
+        </a>
+        
+        <a id="topbar-menu-button" href="#">
+          <i class="material-icons">menu</i>
+        </a>
+				
+        <ul class="topbar-items fadeInDown animated">
+	  
+          <li class="profile-name-show">
+            <a href="#" class="profile-name">
+              <span class="">{{getUsername()}}</span>
+            </a>
+
+            <ul class="ultima-menu animated">
+							
+              <li role="menuitem">
+                <a href="#">
+                  <i class="material-icons">person</i>
+                  <span>Profile</span>
+                </a>
+              </li>
+              <li role="menuitem">
+                <a href="#">
+                  <i class="material-icons">security</i>
+                  <span>Privacy</span>
+                </a>
+              </li>
+              <li role="menuitem">
+                <a href="#">
+                  <i class="material-icons">settings_applications</i>
+                  <span>Settings</span>
+                </a>
+              </li>
+              <li role="menuitem">
+                <a href="#">
+                  <i class="material-icons">power_settings_new</i>
+                  <span>Logout</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="profile-item" [hidden]="profileMode=='top'&&layoutMode=='horizontal'">
+            <a href="#">                            
+              <!-- <div class="profile-image"></div> -->
+              <span class="topbar-item-name">{{getUsername()}}</span>
+            </a>
+            
+            <ul class="ultima-menu animated">
+              <li role="menuitem">
+                <a href="#">
+                  <i class="material-icons">person</i>
+                  <span>Profile</span>
+                </a>
+              </li>
+              <li role="menuitem">
+                <a href="#">
+                  <i class="material-icons">security</i>
+                  <span>Privacy</span>
+                </a>
+              </li>
+              <li role="menuitem">
+                <a href="#">
+                  <i class="material-icons">settings_applications</i>
+                  <span>Settings</span>
+                </a>
+              </li>
+              <li role="menuitem">
+                <a href="#">
+                  <i class="material-icons">power_settings_new</i>
+                  <span>Logout</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!--Side Menu -->
+    <div [ngClass]="{'layout-menu':true,'layout-menu-dark':darkMenu}">
+      <div class="nano">
+				<div class="nano-content menu-scroll-content">
+					<ul id="main-menu" class="ultima-menu clearfix">
+						<li role="menuitem" >
+							<a [routerLink]="['/pendingbookings']">
+								<i class="material-icons">event</i>
+								<span>Bookings</span>
+							</a>
+						</li>
+						<li role="menuitem">
+							<a [routerLink]="['/inventory']">
+								<i class="material-icons">toc</i>
+								<span>Inventory</span>
+							</a>
+						</li>
+						<li role="menuitem"><a href="#" class="ripplelink"><i class="material-icons">view_agenda</i><span>Container Management</span><i class="material-icons">keyboard_arrow_down</i></a>
+              <ul role="menu">
+								<li role="menuitem"><a [routerLink]="['/searchern/open']"  class="ripplelink"><i class="material-icons">control_point</i><span>ERN</span><i class="material-icons">keyboard_arrow_down</i></a>
+									
+								</li>
+								<li role="menuitem"><a [routerLink]="['/redirection/active']" class="ripplelink"><i class="material-icons">compare_arrows</i><span>Redirections</span><i class="material-icons">keyboard_arrow_down</i></a>
+									
+								</li>
+
+                <li role="menuitem"><a [routerLink]="['/pregate']" class="ripplelink"><i class="material-icons">compare_arrows</i><span>Pre Gate</span><i class="material-icons">keyboard_arrow_down</i></a>
+                  
+                </li>
+              </ul>
+            </li>
+						<li role="menuitem"><a href="#" class="ripplelink"><i class="material-icons">desktop_windows</i><span>Interface Options</span><i class="material-icons">keyboard_arrow_down</i></a>
+							<ul role="menu">
+								
+								<li role="menuitem">
+									<a href="#" class="ripplelink" (click)="layoutMode='horizontal';$event.preventDefault()"><i class="material-icons">border_top</i><span>Horizontal Menu</span></a>
+								</li>
+								<li role="menuitem">
+									<a href="#" class="ripplelink" (click)="layoutMode='static';$event.preventDefault()"><i class="material-icons">border_left</i><span>Vertical Menu</span></a>
+								</li>
+							</ul>
+						</li>
+						<li role="menuitem">
+							<a href="#" class="ripplelink" (click)="changeTheme($event, '1-stop')"><i class="material-icons">wb_sunny</i><span>Day</span></a>
+						</li>
+						<li role="menuitem">
+							<a href="#" class="ripplelink" (click)="changeTheme($event, '1-stop-granite')"><i class="material-icons">brightness_3</i><span>Night</span></a>
+						</li>
+					</ul>
+					
+				</div>
+      </div>
+    </div>
+
+    <div class="layout-main">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  <!-- <div style="background-color: red;">
+       footer
+       </div> -->
+</div>
+
+
+<p-dialog header="Error" [(visible)]="applog.showErrorModal" modal="modal" showEffect="fade" responsive="true">
+  <p>{{applog.getErrorLog()}}</p>
+  <footer>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+      <button type="button" pButton  (click)="applog.showErrorModal = false" label="Ok"></button>
+    </div>
+  </footer>
+</p-dialog>
+
+<p-dialog header="Notification" [(visible)]="applog.showNotification" modal="modal" showEffect="fade" responsive="true">
+  <p>{{applog.stdLog}}</p>
+  <footer *ngIf="applog.allowDismissal">
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+      <button type="button" pButton  (click)="applog.showNotification = false" label="Ok"></button>
+    </div>
+  </footer>
+</p-dialog>
+
+
+

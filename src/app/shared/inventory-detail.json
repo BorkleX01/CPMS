@@ -1,0 +1,68 @@
+{
+    "Success": true,
+    "Name": null,
+    "Description": null,
+    "Data": {
+        "Id": "ce999004-de56-4d47-b224-b289140b3e07",
+        "ContainerNo": "AAAA8654449",
+        "CustomerCode": "MSK",
+        "CustomerName": "MAERSK LINE",
+        "CustomerNo": "asdf",
+        "CustomerId": "e327b757-cdb1-426e-ab3b-ad78afae5595",
+        "Grade": "Food",
+        "Rating": "Sample Rating",
+        "IsHeld": true,
+        "IsoCode": "ISO1",
+        "Status": "PENDING",
+        "EmptyLaden": "EMPTY",
+        "Size": 1000,
+        "GrossWeight": 2000,
+        "TareWeight": 3000,
+        "GatedInBy": "user2",
+        "ModifiedBy": "user2",
+        "ModifiedDate": "2016-11-11T00:00:00Z",
+        "StorageDays": 20,
+        "GateInBookingId": "4b3aa239-29aa-4cae-884e-9434c5b88899",
+        "GateOutBookingId": "4b606c86-dc15-494c-a744-a367be599f69",
+        "StackRunGateOutId": "9234DB88-7626-495D-AB19-AE0ACA17D5CE",
+        "ManufactureDate": "2016-10-31T00:00:00Z",
+        "GateInDate": "2016-10-31T00:00:00Z",
+        "GateOutDate": "2016-10-31T00:00:00Z",
+        "Location": "Zone A",
+        "Lease": {
+            "Lessee": "asddsa",
+            "LesseeName": "asdsad",
+            "OffHireDate": "2016-10-31T00:00:00Z",
+            "OnHireDate": "2016-10-31T00:00:00Z",
+            "SubReleaseNo": "ABC123"
+        },
+        "Alerts": [
+            {
+                "Message": "some alert",
+                "CreatedBy": "user1",
+                "CreatedDate": "2016-10-31T00:00:00Z"
+            },
+            {
+                "Message": "another alert",
+                "CreatedBy": "user1",
+                "CreatedDate": "2016-10-31T00:00:00Z"
+            }
+        ],
+        "PreGates": [
+            {
+                "Comments": "some comment",
+                "CreatedDate": "2016-11-10T00:00:00Z",
+                "CreatedBy": "user1",
+                "IsHeld": "true",
+                "Type": "Pre-Gate Single"
+            },
+            {
+                "Comments": "some very long paragraph comments. some very long paragraph comments. some very long paragraph comments. some very long paragraph comments. some very long paragraph comments. some very long paragraph comments. some very long paragraph comments. some very long paragraph comments. some very long paragraph comments.",
+                "CreatedDate": "2016-11-10T00:00:00Z",
+                "CreatedBy": "user2",
+                "IsHeld": "false",
+                "Type": "Pre-Gate Single"
+            }
+        ]
+    }
+}

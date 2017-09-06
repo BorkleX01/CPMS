@@ -1,0 +1,145 @@
+{
+  "sortState": {
+    "sortField": "TimeZone",
+    "sortOrder": -1,
+    "multiSortMeta": [
+      {
+        "field": "TimeZone",
+        "order": 1
+      }
+    ]
+  },
+  "visibleColumnsState": [
+    "ExternalBookingId",
+    "MovementType",
+    "Rego",
+    "TimeZone",
+    "ContainerNo",
+    "ReleaseNo",
+    "IsoCode",
+    "CarrierCode",
+    "CustomerName",
+    "Status"
+  ],
+  "paginationState": {
+    "rows": 30,
+    "pageLinkSize": 5,
+    "first": 0
+  },
+  "columnSizes": [
+    {
+      "column": "ExternalBookingId",
+      "width": "auto"
+    },
+    {
+      "column": "MovementType",
+      "width": "auto"
+    },
+    {
+      "column": "Rego",
+      "width": "auto"
+    },
+    {
+      "column": "TimeZone",
+      "width": "auto"
+    },
+    {
+      "column": "ContainerNo",
+      "width": "auto"
+    },
+    {
+      "column": "ReleaseNo",
+      "width": "auto"
+    },
+    {
+      "column": "IsoCode",
+      "width": "auto"
+    },
+    {
+      "column": "CarrierCode",
+      "width": "auto"
+    },
+    {
+      "column": "CustomerName",
+      "width": "auto"
+    },
+    {
+      "column": "Status",
+      "width": "auto"
+    }
+  ],
+  "filtersState": {
+    "filters": null
+  }
+}
+{
+  "sortState": {
+    "sortField": "TimeZone",
+    "sortOrder": -1,
+    "multiSortMeta": [
+      {
+        "field": "TimeZone",
+        "order": 1
+      }
+    ]
+  },
+  "visibleColumnsState": [
+    "ExternalBookingId",
+    "MovementType",
+    "Rego",
+    "TimeZone",
+    "ContainerNo",
+    "ReleaseNo",
+    "IsoCode",
+    "CarrierCode",
+    "CustomerName",
+    "Status"
+  ],
+  "paginationState": {
+    "rows": 30,
+    "pageLinkSize": 5,
+    "first": 90
+  },
+  "columnSizes": [
+    {
+      "column": "ExternalBookingId",
+      "width": "auto"
+    },
+    {
+      "column": "MovementType",
+      "width": "auto"
+    },
+    {
+      "column": "Rego",
+      "width": "auto"
+    },
+    {
+      "column": "TimeZone",
+      "width": "auto"
+    },
+    {
+      "column": "ContainerNo",
+      "width": "auto"
+    },
+    {
+      "column": "ReleaseNo",
+      "width": "auto"
+    },
+    {
+      "column": "IsoCode",
+      "width": "auto"
+    },
+    {
+      "column": "CarrierCode",
+      "width": "auto"
+    },
+    {
+      "column": "CustomerName",
+      "width": "auto"
+    },
+    {
+      "column": "Status",
+      "width": "auto"
+    }
+  ]
+}

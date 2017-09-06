@@ -1,0 +1,102 @@
+<div class="card card-w-title std-height">
+    <h1>Pending Bookings</h1>
+    <div class="card">
+        <div class="ui-grid ui-grid-responsive ui-fluid form-group">
+            
+            <div class="ui-grid-row">
+                <div class="ui-g-12 ui-md-2">
+                    <label for="selectbutton">Movement Type</label>
+                </div>
+                <div class="ui-g-12 ui-md-6">
+                    <p-selectButton [options]="movementType" [(ngModel)]="filter.MovementTypeFilter"></p-selectButton>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-g-12 ui-md-2">
+                    <label for="selectbutton">Transactions for Today</label>
+                </div>
+                <div class="ui-g-12 ui-md-4">
+                    <p-checkbox [(ngModel)]="filter.TodayOnly" binary="true"></p-checkbox>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-g-12 ui-md-8 ">
+                    <button pButton type="button" (click)="searchBookings(filter)" style="width:auto" label="Update Search" class="pull-right" ></button>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+	<div *ngIf="totalCount > 0">
+	    <p-dataTable persistedStateId="bookingTable" (onColumnVisibilityChange)="visChange($event)" [defaultState]="bookingsDefaultUIsettings" [value]="tableData"  [rowsPerPageOptions]="[10, 20, 30, 60, 90]" [paginator]="true" [rows]="30" columnResizeMode="fit" sortMode="multiple" resizableColumns="true" reorderableColumns="true" [responsive]="true" selectionMode="single" #podt (onRowDblclick)="viewBookingDetail($event)" paginatorPosition="top">
+		    <header>
+	            <div style="text-align: left;">
+	                <div  style="display: inline-block;">
+	                    <p-multiSelect [options]="columnOptions" [(ngModel)]="selectedColumns" ></p-multiSelect>
+	                </div>
+	                <div  style="display: inline-block;float: right;">
+	                    <input #openGf type="text" pInputText size="20" placeholder="Search">
+	                </div>
+	            </div>
+	        </header>	    
+		    
+		    <p-column  *ngFor="let col of selectedColumns" [field]="col" [header]="col" [sortable]="true" [filter]="true" filterMatchMode="contains" [style]="{'white-space':'nowrap'}">
+			    <template let-row="rowData" *ngIf="col.indexOf('Date')!=-1" pTemplate type="body">
+			    	<span>{{row.BookingDate.length > 0 ? (row.BookingDate|date:"dd/MM/yyyy HH:mm"): '-' }}</span>
+			    </template>
+		    </p-column>
+
+		    <p-column header="More"  [style]="{'overflow':'visible','width':'51px'}">
+		        <template let-row="rowData" pTemplate type="body" >
+		            <p-menu #menu popup="popup" [model]="items" (menuHide)="menuHideFunction()"></p-menu>
+		            <button type="button" icon="ui-icon-dehaze" pButton (click)="menu.toggle($event);sButtonClick(row)"></button>
+		        </template>
+		    </p-column>
+
+		    <footer>{{totalCount}} Records</footer>
+
+	    </p-dataTable>
+	</div>
+	<p-messages [value]="userMsgs"></p-messages>
+</div>
+
+<p-dialog header="Gate out" [(visible)]="isGateOut" modal="modal" showEffect="fade" responsive="true" class="cpms-dialog">
+		<p>Enter the container number to gate out.</p>
+		<p-autoComplete [(ngModel)]="gateOutContainerNo" [suggestions]="filteredContainerList" (completeMethod)="filterContainers($event)" [minLength]="1"></p-autoComplete>
+		<footer>
+      <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+        <button type="button" pButton icon="fa-close" (click)="pickUp()" label="Ok" [disabled]="gateOutContainerNo.length == 0"></button>
+      </div>
+		</footer>
+</p-dialog>
+
+<p-dialog header="Confirm" [(visible)]="deleteConfirm" modal="modal" showEffect="fade" [closable]="false" responsive="true">
+	<p>This booking will now be deleted.</p>
+	<br>
+	<p>Do you wish to proceed?</p>
+	<footer>
+	   <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+	      <button type="button" pButton  (click)="deleteConfirm = false" label="No"></button>
+	      <button type="button" pButton  (click)="deleteBooking()" label="Yes"></button>
+	   </div>
+	</footer>
+</p-dialog>
+
+<p-dialog header="Success" [(visible)]="gateInSuccess" modal="modal" showEffect="fade" responsive="true" class="cpms-dialog">
+		<p>The container {{currentRecord.ContainerNo}} has been gated in and is now in the inventory.</p>
+		<footer>
+	      	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+	        	<button type="button" pButton icon="fa-check" (click)="gateInSuccess=false" label="Ok"></button>
+	      	</div>
+		</footer>
+</p-dialog>
+
+<p-dialog header="Success" [(visible)]="gateOutSuccess" modal="modal" showEffect="fade" responsive="true" class="cpms-dialog">
+		<p>The container {{gateOutContainerNo}} has been gated out successfully.</p>
+		<footer>
+	      	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+	        	<button type="button" pButton icon="fa-check" (click)="gateOutSuccess=false" label="Ok"></button>
+	      	</div>
+		</footer>
+</p-dialog>

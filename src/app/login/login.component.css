@@ -1,0 +1,101 @@
+.login-container{
+    
+    max-width: 450px;
+    width: 100%;
+    margin: 0 auto;
+    background-color: white;
+    min-height: 300px;
+    margin-top: 0px;
+    
+    border-radius: 5px;
+    padding: 30px;
+    float: none;
+}
+
+.error{
+    border: 1px solid #a94442 !important;
+    box-shadow: 0 0 2px #a94442;
+}
+
+.main-container {
+
+    margin: 0 auto;
+    min-height: 1070px; 
+    display: block;
+
+}
+
+.main-container::after{
+    bottom: 0;
+    content: "";
+    /*background: url('assets/images/login.png');*/
+    opacity: 0.5;
+    top: 0;
+    left: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+.content {
+    padding-top: 8%;
+}
+#footer {
+    position:absolute;
+    bottom:0;
+    width: 100%;
+    background-color: grey;
+    color: white;
+    min-height: 150px;
+}
+
+.login-logo{
+    background-image: url('assets/images/1-StopLogo20x20mm_jpg.png');
+    height: 150px;
+    width: 150px;
+    margin: 0 auto;
+    background-size: contain;
+    padding-bottom: 35px;
+    background-repeat: no-repeat;
+}
+
+.login-heading{
+    font-size: 32px;
+    color: rgb(47,158,218);
+}
+
+.input-container{
+    width: 90%;
+    text-align: center;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.input-container input{
+    margin-bottom: 15px;
+}
+
+.input-container button{
+    width: 50%;
+    background-color: rgb(47,158,218);
+    border-color: rgb(47,158,218);
+    color: #FFFFFF;
+}
+
+.input-container button:hover {
+    width: 50%;
+    background-color: #000000;
+    border-color: rgb(47,158,218);
+    color: #FFFFFF;
+}
+
+.invalid-login{
+    color: #a94442;
+    margin-bottom: 5px;
+}
+
+.shadow-box{
+    padding-top: 50px;
+    padding-bottom: 50px;
+}

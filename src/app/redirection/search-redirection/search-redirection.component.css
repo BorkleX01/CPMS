@@ -1,0 +1,14 @@
+.active-filter{
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+
+.ui-widget-header input[type="date"]::before { 
+	content: attr(data-placeholder);
+}
+
+.ui-widget-header input[type="date"]:focus::before { display: none }
+
+.no-padding{
+	padding: 0 !important;
+}

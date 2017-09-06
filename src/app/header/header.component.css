@@ -1,0 +1,19 @@
+.logo{
+    cursor: pointer;
+    background-image: url("assets/images/logo.png");
+    background-size: 35px 35px;
+    background-repeat: no-repeat;
+    height: 40px;
+    background-position-x: 20px;
+}
+
+.header-container{
+	background-color: #2E9EDB;
+	height: 60px;
+	padding-top: 15px;
+	margin-bottom: 20px;
+}
+
+.user{
+    color: #fff;
+}

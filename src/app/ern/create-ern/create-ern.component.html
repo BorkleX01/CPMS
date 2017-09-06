@@ -1,0 +1,83 @@
+<div class="card car-w-title create-ern-container std-height">
+    <h1>Create New ERN</h1>
+    <div class="ui-grid ui-grid-responsive ui-fluid form-group">
+        <div class="ui-g-12 ui-g-nopad">
+            <div class="ui-grid-row">
+                <div class="ui-g-12 ui-md-6 text-left">
+                    <button pButton style="width:auto" (click)="goBack()" label="Back"></button>
+                </div>
+                <div class="ui-g-12 ui-md-6 text-right ern-button-grp">				
+                    <button pButton style="width:auto" (click)="createERN()" label="Save"></button>
+                    <button pButton style="width:auto" (click)="goBack()" label="Cancel"></button>			
+                </div>
+            </div>
+            <hr>
+            <p-messages [value]="userMsgs"></p-messages>
+            <div class="ui-grid-row">
+                <div class="ui-g-12 ui-md-6">
+                    <div class="card">
+                        <div class="ui-grid-row">
+                            <div class="ui-g-12 ui-md-4">
+                                <div class="create-section">
+                                    <label>Customer Code</label>
+                                    <!-- <input type="text" pInputText [(ngModel)]="newErn.CustomerCode" > -->
+                                    <p-dropdown [options]="customerList" [(ngModel)]="newErn.CustomerId" [autoWidth]="false" (onChange)="populateCustomerCode($event)"></p-dropdown>
+                                </div>
+                                <div class="create-section">
+                                    <label>Release #</label>
+                                    <input type="text" pInputText [(ngModel)]="newErn.ReleaseNo" >
+                                </div>
+                                <div class="create-section">
+                                    <label>Shipper</label>
+                                    <input type="text" pInputText >
+                                </div>
+                                 <div class="create-section">
+                                    <label>Expected Release Date</label>
+                                    <p-calendar dateFormat="dd/M/yy" [(ngModel)]="newErn.ExpectedReleaseDate"></p-calendar>                     
+                                    
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-md-8">
+                                <div class="create-section">
+                                    <label>Comments</label>
+                                    <textarea rows="11"  [(ngModel)]="newErn.comments" pInputTextarea ></textarea>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+
+                <div class="ui-g-12 ui-md-6">
+                    <div class="card card-w-title iso-spec-height">
+                        <h3>ISO specifications</h3>
+                        <div>
+                            <p-dataTable  [value]="newErn.ErnSpecifications" [responsive]="true" [editable]="true" >
+                                <p-column field="Iso" header="ISO Code" [editable]="true"></p-column>
+                                <p-column field="Quantity" header="Qty Ordered" [editable]="true" ></p-column>
+                                <p-column  header="">
+                                    <template let-ern="rowData" pTemplate type="body">
+                                        <span><i (click)="remove(ern)" class="material-icons">remove_circle</i></span>
+                                    </template>
+                                </p-column>
+                                <footer>
+                                    <div class="ui-helper-clearfix" style="width:100%">
+                                        <button type="button" pButton icon="fa-plus" style="float:left;width:auto;" (click)="addSpecification()" label="Add"></button>
+                                    </div>
+                                </footer>
+                            </p-dataTable>  
+                        </div>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p-dialog header="Success" [(visible)]="createSuccess" modal="modal" showEffect="fade" responsive="true">
+	<p>The ERN has been successfully created and is now OPEN.</p>
+	<footer>
+	    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+	        <button type="button" pButton icon="fa-close" (click)="closeDialog()" label="Ok"></button>
+	    </div>
+	</footer>
+</p-dialog>

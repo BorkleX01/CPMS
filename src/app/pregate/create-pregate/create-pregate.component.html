@@ -1,0 +1,102 @@
+<div class="card car-w-title create-redirection-container std-height">
+    <h1>Create New Pre-Gate</h1>
+    <div class="ui-grid ui-grid-responsive ui-fluid form-group">
+        <div class="ui-g-12 ui-g-nopad">
+            <div class="ui-grid-row ">
+                <div class="ui-g-12 ui-md-6 text-left">
+                    <button pButton style="width:auto" (click)="goBack()" label="Back"></button>
+                </div>
+                <div class="ui-md-6 text-right pregate-button-grp">
+                    <button pButton style="width:auto" (click)="createPregate()" label="Submit"></button>
+                    <button pButton style="width:auto" (click)="goBack()" label="Cancel"></button>
+                </div>
+            </div>
+            <hr>
+            <p-messages [value]="userMsgs"></p-messages> 
+            <div class="ui-grid-row">                 
+                <div class="ui-g-12 ui-md-6 ">
+                    <div class="card pregate-detail-section">
+                        <div class="ui-grid-row">
+                            <div class="ui-g-12 ui-md-6">
+                                <label>Pre-Gate Type</label>
+                                <div>
+                                    <p-selectButton [options]="pregateType" [(ngModel)]="newPregate.PreGateType" styleClass="type" [style]="{'margin-top':'5px'}"></p-selectButton>
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-md-6" *ngIf="newPregate.PreGateType.length > 0">
+                            	<label>Container Number</label>
+                                <input type="text" pInputText [(ngModel)]="newPregate.ContainerNumber">
+                            </div>
+                        </div>
+                        <div class="ui-grid-row">
+                        	<div class="ui-g-12 ui-md-6">
+                        	</div>
+                        	<div class="ui-g-12 ui-md-6" *ngIf="newPregate.PreGateType=='RANGE'">
+                        		<label>To Container Number</label>
+                                <input type="text" pInputText [(ngModel)]="newPregate.ContainerNumberTo" >
+                        	</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="ui-grid-row" *ngIf="newPregate.PreGateType.length > 0">
+                <div class="ui-g-12 ui-md-6 ">
+                    <div class="card pregate-detail-section">
+                        <div class="ui-grid-row ">
+                            <div class="ui-g-12 ui-md-6">
+                                <label>Customer Code</label>
+                                <!-- <input type="text" pInputText [(ngModel)]="newPregate.CustomerId" > -->
+                                <p-dropdown [options]="customerList" [(ngModel)]="newPregate.CustomerId" [autoWidth]="false" (onChange)="populateSelectedCustomer()"></p-dropdown>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <label>Customer Name</label>
+                                <div>{{selectedCustomer.Name}}</div>
+                            </div>
+                        </div>
+
+                        <div class="ui-grid-row ">
+                            <div class="ui-g-12 ui-md-6">
+                                <label>Start Date</label>
+                                <p-calendar  placeholder="Start Date" [(ngModel)]="newPregate.StartDate" dateFormat="yy-mm-dd"></p-calendar>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <label>End Date</label>
+                                <p-calendar  placeholder="End Date" [(ngModel)]="newPregate.EndDate" dateFormat="yy-mm-dd"></p-calendar>
+                            </div>
+                        </div>
+
+                        <div class="ui-grid-row" >                            
+                            <div class="ui-g-12 ui-md-6">
+                                <label>Apply Hold:</label>
+                                <p-checkbox [(ngModel)]="newPregate.ApplyHold" binary="true" class="edit"></p-checkbox>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ui-g-12 ui-md-6 ">
+                    <div class="card comments-height pregate-detail-section">
+                        <div class="ui-grid-row">
+                            <div class="ui-g-12 ui-md-12">
+                                <label>Description</label>
+                                <textarea  [(ngModel)]="newPregate.Comments" rows="8" maxlength="500" pInputTextarea placeholder="Please provide description."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>     
+                      
+        </div>
+    </div>
+</div>
+
+ <p-dialog header="Success" [(visible)]="createSuccess" modal="modal" showEffect="fade" responsive="true">
+	<p>The pre gate condition has been successfully created.</p>
+	<footer>
+	    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+	        <button type="button" pButton icon="fa-close" (click)="createSuccess = false;goBack()" label="Ok"></button>
+	    </div>
+	</footer>
+</p-dialog>

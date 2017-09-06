@@ -1,0 +1,204 @@
+<div class="card car-w-title create-ern-container std-height">
+    <h1>{{ernDetails.ReleaseNumber}} - Details</h1>
+    <div class="ui-grid ui-grid-responsive ui-fluid form-group">
+        <div class="ui-g-12">
+            <div class="ui-grid-row ">
+                <div class="ui-g-6 text-left">
+                    <button pButton style="width:auto" label="Back" (click)="goBack()"></button>
+                </div>
+                <div class="ui-g-6 text-right ern-button-grp">
+                    <button pButton style="width:auto" label="Edit" *ngIf="!editEnabled && ernDetails.ERNStatus == 'OPEN'" (click)="editERN()"></button>
+                    <button pButton style="width:auto" label="Submit" *ngIf="editEnabled" (click)="saveERN()"></button>
+                    <button pButton style="width:auto" label="Delete" *ngIf="ernDetails.ERNStatus == 'OPEN'"(click)="confirmClose()"></button>
+                    <button pButton style="width:auto" label="Re Open" *ngIf="ernDetails.ERNStatus == 'CLOSE'"(click)="reopenERN()"></button>
+                    <button pButton style="width:auto" label="Cancel" *ngIf="editEnabled"(click)="cancel()"></button>
+                </div>
+            </div>
+            <hr>
+            <div class="ui-grid-row ">
+                <div class="ui-g-12 ui-md-6">
+                    <div class="card ui-g-12">
+                        <div class="ui-g-12 ui-md-5 ui-g-nopad">
+                            <div class="ui-grid-row">
+                                <div class="ui-g-12 ui-md-6 ">
+                                    <label><b>Customer Code</b></label>
+                                    <div>{{ernDetails.CustomerCode}}</div>
+                                </div>
+                                <div class="ui-g-12 ui-md-6">
+                                    <label><b>Release #</b></label>
+                                    <div>{{ernDetails.ReleaseNumber}}</div>
+                                </div>
+                            </div>
+                            <div class="ui-grid-row">
+                                <div class="ui-g-12 ui-md-6 ">
+                                    <label><b>Shipper</b></label>
+                                    <div>---</div>
+                                </div>
+                                <div class="ui-g-12 ui-md-6 ">
+                                    <label><b>Expected Release Date</b></label>
+                                    <div>{{ernDetails.ExpectedReleaseDate? (ernDetails.ExpectedReleaseDate | date: 'dd/MM/yyyy HH:mm') : '-'}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-g-12 ui-md-7 ui-g-nopad">
+                            <div class="ui-grid-row">
+                                <div class="ui-g-12 ui-md-12 ">
+                                    <label><b>Comments</b></label>
+                                    <div>{{ ernDetails.Comments }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui-g-12 ui-md-6 " >
+                    <div class="card">
+                        <div class="ui-grid-row">
+                            <div class="ui-g-12 ui-md-4">
+                                <label><b>Created By:</b></label>
+                                <div>{{ernDetails.CreatedBy == null || ernDetails.CreatedBy.length == 0 ? '-' : ernDetails.CreatedBy}}</div>
+                            </div>
+                            <div class="ui-g-12 ui-md-4">
+                                <label><b>Last Changed By:</b></label>
+                                <div>-</div>
+                            </div>
+                            <div class="ui-g-12 ui-md-4">
+                                <label><b>Status:</b></label>
+                                <div>{{ernDetails.ERNStatus}}</div>
+                            </div>
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-g-12 ui-md-4">
+                                <label><b>Created Date:</b></label>
+                                <div>{{ernDetails.CreationDate |date:'dd-MMM-yyyy'}}</div>
+                            </div>
+                            <div class="ui-g-12 ui-md-4">
+                                <label><b>Last Changed Date:</b></label>
+                                <div>-</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui-grid-row">
+                <div class="ui-g-12 ui-md-4">
+                    <div class="card card-w-title static-height">
+                        <h3>ERN Summary</h3>
+                        <div>
+                            <p-dataTable  [value]="ernDetails.IsoList" [responsive]="true" [editable]="editEnabled" [globalFilter]="isogf">
+                                <header>
+                                    <div style="text-align: left;">
+                                        <div  style="display: inline-block;">
+                                            <!-- <p-multiSelect [options]="columnOptions" [(ngModel)]="selectedColumns" ></p-multiSelect> -->
+                                        </div>
+                                        <div  style="display: inline-block;float: right;">
+                                            <input #isogf type="text" pInputText size="20" placeholder="Search">
+                                        </div>
+                                    </div>
+                                </header>
+                                <p-column styleClass="custom-8" field="IsoCode" header="ISO Code" [editable]="(editEnabled && QuantityReleased == 0)"></p-column>
+                                <p-column styleClass="custom-8" field="QuantityOrdered" header="Qty Ordered" [editable]="editEnabled" ></p-column>
+                                <p-column styleClass="custom-8" field="QuantityReleased" header="Qty Released"  ></p-column>
+                                <!-- <p-column styleClass="custom-41" field="Remarks" colspan="2" header="Remarks" [editable]="editEnabled"></p-column>  --> 
+                                <footer *ngIf="editEnabled&&!isAdd">
+                                    <div class="ui-helper-clearfix" style="width:100%">
+                                        <button type="button" pButton icon="fa-plus" style="float:left;width:auto;" (click)="isAdd=true;addSpecification()" label="Add"></button>
+                                    </div>
+                                </footer>
+                            </p-dataTable>
+                        </div>
+                        <div *ngIf="isAdd">
+                            <p-dataTable  [value]="newReleaseList"  [editable]="true" emptyMessage=""  [responsive]="true" class="primeng-table">
+                                <p-column styleClass="custom-8" field="IsoCode"  [editable]="true"></p-column>
+                                <p-column styleClass="custom-8" field="QuantityOrdered"  [editable]="true" ></p-column>
+                                <p-column styleClass="custom-7" field="QuantityReleased" >
+                                    <template let-ern="rowData" pTemplate type="body">
+                                        <span>0</span>
+                                    </template>
+                                </p-column>
+                                <!-- <p-column styleClass="custom-33" field="Remarks"  [editable]="true"></p-column> -->
+                                <p-column styleClass="custom-3" field="qty" >
+                                    <template let-ern="rowData" let-ri="rowIndex" pTemplate type="body">
+                                        <span><i (click)="removeSpecification(ri)" class="material-icons">remove_circle</i></span>
+                                    </template>
+                                </p-column>
+                                <footer>
+                                    <div class="ui-helper-clearfix" style="width:100%">
+                                        <button type="button" pButton icon="fa-plus" style="float:left;width:auto;" (click)="addSpecification()" label="Add More"></button>
+                                    </div>
+                                </footer>
+                            </p-dataTable>  
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ui-g-12 ui-md-8">
+                    <div class="card card-w-title static-height">
+                        <h3>Released Containers</h3>
+                        <div *ngIf="ernDetails.ReleasedContainerList && ernDetails.ReleasedContainerList.length > 0">
+                            <p-dataTable [value]="ernDetails.ReleasedContainerList" [paginator]="true" [rows]="5" [globalFilter]="gb">
+                                <header>
+                                    <div style="text-align: left;">
+                                        <div  style="display: inline-block;">
+                                            <!-- <p-multiSelect [options]="columnOptions" [(ngModel)]="selectedColumns" ></p-multiSelect> -->
+                                        </div>
+                                        <div  style="display: inline-block;float: right;">
+                                            <input #gb type="text" pInputText size="20" placeholder="Search">
+                                        </div>
+                                    </div>
+                                </header>
+                                <p-column field="IsoCode" header="ISO Code" [sortable]="true"></p-column>
+                                <p-column field="ContainerNumber" header="Container No:" [sortable]="true"></p-column>
+                                <p-column field="Carrier" header="Carrier"></p-column>
+                                <p-column field="RegoNumber" header="Rego No:"></p-column>
+                                <p-column field="GateOutDate" header="Gated Out On">
+                                    <template let-col let-ern="rowData" pTemplate type="body">
+                                        <span>{{ern.GateOutDate|date:"dd-MMM-yyyy HH:mm" }}</span>
+                                    </template>
+                                </p-column>
+                            </p-dataTable>
+                        </div>
+                        <p-messages [value]="releaseMsgs"></p-messages>
+                    </div>
+                </div>
+            </div> 
+            <div class="ui-grid-row">
+                <div class="ui-g-12 ui-md-6">
+                    <p-messages [value]="userMsgs"></p-messages>   
+                </div>
+            </div>
+                   
+        </div>
+    </div>
+</div>
+
+<p-dialog header="Success" [(visible)]="saveSuccess" modal="modal" showEffect="fade" responsive="true">
+    <p>The ERN has been updated successfully.</p>
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+            <button type="button" pButton  (click)="closeDialog()" label="Ok"></button>
+        </div>
+</footer>
+
+</p-dialog>
+<p-dialog header="Confirm" [(visible)]="closeConfirm" modal="modal" showEffect="fade" [closable]="false" width="360" responsive="true">
+    <p>This ERN will be closed and moved to Archive.</p>
+    <br>
+    <p>Do you wish to proceed?</p>
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+            <button type="button" pButton  (click)="closeConfirm = false" label="No"></button>
+            <button type="button" pButton  (click)="closeERN()" label="Yes"></button>
+        </div>
+    </footer>
+</p-dialog>
+
+<p-dialog header="Success" [(visible)]="closeSuccess" modal="modal" showEffect="fade" width="450" responsive="true">
+    <p>The ERN has been closed successfully.</p>
+    <p>The details of this ERN can now be viewed in the ERN history.</p>
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+            <button type="button" pButton (click)="closeDialog()" label="Ok"></button>
+        </div>
+    </footer>
+</p-dialog>

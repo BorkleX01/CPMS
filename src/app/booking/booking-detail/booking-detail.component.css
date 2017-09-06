@@ -1,0 +1,10 @@
+@media (min-width: 768px){
+	.ern-button-grp{
+		text-align: right;
+	}
+}
+
+.mid-button{
+	margin-left: 10px;
+    margin-right: 10px;
+}

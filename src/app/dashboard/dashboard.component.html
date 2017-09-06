@@ -1,0 +1,49 @@
+<div>
+	<div class="ui-g-12">
+		<div class="ui-g-row">
+			<div class="ui-g-12 ui-md-12">
+				<div class="card" >
+
+          <p-chart #qvtChart type="bar" [data]="bookingQtyVTimeData" [options]="bookingQtyVTimeOptions" [width]="250" [height]="50"></p-chart>	 
+		        </div>
+			</div>
+
+			<div class="ui-g-12 ui-md-4">
+				<div class="card">
+					<p-chart  type="bar" [data]="bookingQtyVDaysData" [options]="bookingQtyVDaysOptions" [width]="250" [height]="250"></p-chart>	 
+		        </div>
+			</div>
+
+			<div class="ui-g-12 ui-md-4">
+				<div class="card" >
+	            	<p-chart #bookingChart type="pie" [data]="pieData" [options]="pieOptions" [width]="250" [height]="250"></p-chart>	 
+	            	<!-- <div *ngFor="let legend of bookingPieLegend; let i = index;" class="ui-md-2">
+		            	<span [ngStyle]="{'color': bookingPieLegendColors[i],'height':'20px','width':'20px'}"></span>
+		            	<span>{{legend}}</span>           
+			        </div> -->
+				</div>
+			</div>
+			<div class="ui-g-12 ui-md-4">
+				<div class="card">
+					<p-chart type="pie" [data]="yardData" [options]="yardChartOptions" [width]="250" [height]="250"></p-chart>
+		    </div>
+			</div>
+
+			<!-- <div class="ui-g-12 ui-md-3">
+				<div class="card">
+		            <h1 class="centerText">M& R Work Trend for 12 months by S/L</h1>	            
+		        </div>
+			</div> -->
+			
+		</div>
+		<div class="ui-g-row">
+			<div class="ui-g-12 ui-md-12">
+				<div class="card">
+		            <h1 class="centerText">Pending Stack Runs</h1>	            
+		        </div>
+			</div>
+		</div>
+	</div>
+	
+	
+</div>

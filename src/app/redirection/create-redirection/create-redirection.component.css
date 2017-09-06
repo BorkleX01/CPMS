@@ -1,0 +1,18 @@
+.redirection-detail-section label {
+	font-weight: bold;
+}
+
+
+.redirection-button-grp button:first-child{
+	margin-right: 30px;
+}
+
+.redirection-button-grp button:last-child{
+	margin-left: 30px;
+}
+
+@media (min-width: 768px){
+	.comments-height{
+		min-height: 233px;
+	}	
+}

@@ -1,0 +1,127 @@
+<div class="card">
+    <div class="ui-grid ui-grid-responsive ui-fluid form-group">
+        <div class="ui-g-12">
+            <div class="ui-grid-row ">
+                <div class="ui-g-6 text-left">
+                    <button pButton style="width:auto" label="Back" (click)="goBack()"></button>
+                </div>
+                <div class="ui-g-6 text-right ern-button-grp">
+                    <button pButton style="width:auto" label="Edit" *ngIf="!editEnabled && preGateDetails.ArchiveStatus == null " (click)="editPregate()"></button>
+                    <button pButton style="width:auto" label="Save" *ngIf="editEnabled" (click)="savePregate()"></button>
+                    <button pButton style="width:auto" label="Cancel" *ngIf="editEnabled"(click)="cancel()"></button>
+                    <button pButton style="width:auto" label="Delete" *ngIf="preGateDetails.ArchiveStatus == null"(click)="confirmDelete = true"></button>
+                </div>
+            </div>
+            <p-messages [value]="userMsgs"></p-messages> 
+            <div class="ui-grid-row">
+                <div class="ui-g-12 ui-md-9 ">
+                    <div class="card card-w-title ">
+                        <h1>Pre-Gate Details</h1>
+                        <div class="ui-grid-row">
+                            <div class="ui-g-12 ui-md-4 ">
+                                <label><b>Customer Code:</b></label> 
+                                <div *ngIf="!editEnabled">{{preGateDetails.CustomerCode}}</div>
+                                <p-dropdown *ngIf="editEnabled" [options]="customerList" [(ngModel)]="updatedPregate.CustomerId" [autoWidth]="false" (onChange)="populateSelectedCustomer()"></p-dropdown>
+                            </div>
+                            <div class="ui-g-12 ui-md-4">
+                                <label><b>Customer Name:</b></label> 
+                                <div *ngIf="!editEnabled">{{preGateDetails.CustomerName}}</div>
+                                <div *ngIf="editEnabled">{{selectedCustomerName}}</div>
+                            </div>
+                            <div class="ui-g-12 ui-md-4 ">
+                                <label><b>Type:</b></label> 
+                                <div>{{preGateDetails.PreGateType}}</div>
+                            </div>                  
+                        </div>
+
+                        <div class="ui-grid-row">
+                            <div class="ui-g-12 ui-md-4 ">
+                                <label><b>Start Date:</b></label> 
+                                <div *ngIf="!editEnabled">{{preGateDetails.StartDate | date:'dd/MM/yyyy'}}</div>
+                                <p-calendar *ngIf="editEnabled" placeholder="Start Date" [(ngModel)]="updatedPregate.StartDate" dateFormat="yy-mm-dd"></p-calendar>
+                            </div>
+                            <div class="ui-g-12 ui-md-4">
+                                <label><b>End Date:</b></label> 
+                                <div *ngIf="!editEnabled">{{preGateDetails.EndDate | date:'dd/MM/yyyy'}}</div>
+                                <p-calendar *ngIf="editEnabled" placeholder="End Date" [(ngModel)]="updatedPregate.EndDate" dateFormat="yy-mm-dd"></p-calendar>
+                            </div>
+                            <div class="ui-g-12 ui-md-4 ">
+                                <label><b>On Hold:</b></label> 
+                                <div *ngIf="!editEnabled">{{preGateDetails.ApplyHold}}</div>
+                                <p-checkbox *ngIf="editEnabled"[(ngModel)]="updatedPregate.ApplyHold" binary="true" style="display:block;"></p-checkbox>
+                            </div>                      
+                        </div>
+
+                        <div class="ui-grid-row">
+                            <div class="ui-g-12 ui-md-4 ">
+                                <label><b>Container Number:</b></label> 
+                                <div *ngIf="!editEnabled">{{preGateDetails.ContainerNumber}}</div>
+                                <input *ngIf="editEnabled" type="text" pInputText [(ngModel)]="updatedPregate.ContainerNumber">
+                            </div>
+                            <div class="ui-g-12 ui-md-4">
+                                <label><b>To Container Number</b></label> 
+                                <div *ngIf="!editEnabled">{{preGateDetails.ContainerNumberTo}}</div>
+                                <input *ngIf="editEnabled && preGateDetails.PreGateType =='RANGE'" type="text" pInputText [(ngModel)]="updatedPregate.ContainerNumberTo">
+                            </div>
+                            <div class="ui-g-12 ui-md-4 ">
+                                <label><b>Description</b></label> 
+                                <div *ngIf="!editEnabled">{{preGateDetails.Comments}}</div>
+                                <textarea *ngIf="editEnabled" [(ngModel)]="updatedPregate.Comments" rows="8" maxlength="500" pInputTextarea placeholder="Please provide description."></textarea>
+                            </div>                      
+                        </div>
+
+                    </div>
+                </div>
+                <div class="ui-g-12 ui-md-3 ">
+                	<div class="ui-grid-row">
+                        <div class="card ui-g-12">
+                            <div class="ui-grid-row">
+                                <div class="ui-g-12 ">
+                                    <label><b>Created By:</b></label>
+                                    <div>{{preGateDetails.CreatedBy == null || preGateDetails.CreatedBy.length == 0 ? '-' : preGateDetails.CreatedBy + ' on '+ (preGateDetails.CreatedDate |date:'dd/MM/yyyy')}}</div>
+                                </div>
+                            </div>
+                            <div class="ui-grid-row">
+                                <div class="ui-g-12 ">
+                                    <label><b>Last Changed By:</b></label>
+                                    <div>{{preGateDetails.ModifiedBy == null || preGateDetails.ModifiedBy.length == 0 ? '-' : preGateDetails.ModifiedBy + ' on '+ (preGateDetails.ModifiedDate|date:'dd/MM/yyyy')}} </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p-dialog header="Success" [(visible)]="saveSuccess" modal="modal" showEffect="fade" responsive="true">
+    <p>The Pre-gate condition has been updated successfully.</p>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" pButton  (click)="closeDialog()" label="Ok"></button>
+            </div>
+        </footer>
+</p-dialog>
+
+<p-dialog header="Confirm" [(visible)]="confirmDelete" modal="modal" showEffect="fade" [closable]="false" width="360" responsive="true">
+    <p>This Pregate condition will now be deleted.</p>
+    <br>
+    <p>Do you wish to proceed?</p>
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+            <button type="button" pButton  (click)="confirmDelete = false" label="No"></button>
+            <button type="button" pButton  (click)="delete()" label="Yes"></button>
+        </div>
+    </footer>
+</p-dialog>
+
+<p-dialog header="Success" [(visible)]="deleteSuccess" modal="modal" showEffect="fade" width="450" responsive="true">
+    <p>The Pregate condition has been deleted successfully.</p>
+    <p>The details of this Pregate can now be viewed in the Pregate history.</p>
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+            <button type="button" pButton (click)="closeDialog()" label="Ok"></button>
+        </div>
+    </footer>
+</p-dialog>

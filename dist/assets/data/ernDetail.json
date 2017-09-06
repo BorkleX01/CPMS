@@ -1,0 +1,31 @@
+{
+  "Success": true,
+  "Data": {
+    "ReleaseNumber": "ERN1",
+    "CustomerCode": "HSD",
+    "CustomerName": "Hamburg",
+    "CustomerId": "9234DB88-7626-495D-AB19-AE0ACA17D5CE",
+    "ERNStatus": "OPEN",
+    "CreationMonth": "20169t",
+    "CreationDate": "2016-10-31T00:00:00Z",
+    "IsoList": [
+      {
+        "IsoCode": "ISO1",
+        "QuantityOrdered": 2,
+        "QuantityReleased": 1,
+        "ExpectedReleaseDate": "2016-09-1",
+        "Remarks": "blabla"
+      }
+    ],
+    "ReleasedContainerList": [
+      {
+        "IsoCode": "ISO2",
+        "ContainerNumber": "cont123",
+        "Carrier": "carr1",
+        "RegoNumber": "123abc",
+        "GateOutDate": "2016-11-1"
+      }
+    ]
+  }
+}
+	

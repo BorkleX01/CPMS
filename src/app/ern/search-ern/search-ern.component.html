@@ -1,0 +1,126 @@
+<div class="card car-w-title search-ern-container std-height">
+    <div class="ui-g-12 ui-md-6 no-bottom-pad">
+        <h1>Export Release Notes (ERN)</h1>
+    </div>
+    <div class="ui-g-12 ui-md-6 text-right no-bottom-pad">
+        <button pButton class="" label="Create ERN" routerLink="/createern" style="width:auto"></button>
+    </div>
+    <div class="ui-grid ui-grid-responsive ui-fluid form-group">
+        <div class="ui-grid-row ">
+            <div class="ui-g-12 ui-md-12">
+                <p-tabView  (onChange)="changeTab($event)" class="primeng-tab">
+                    <p-tabPanel header="Open" [selected]="!isHistory" >
+                        
+                        <div *ngIf="resultObj.length > 0">
+                            <p-dataTable [value]="resultObj" [paginator]="true" [rows]="10" (onRowDblclick)="viewERNDetail($event)" class="ern-row" [globalFilter]="opnGf" [responsive]="true" selectionMode="single">
+                                <header>
+                                    <div style="text-align: left;">
+                                        <div  style="display: inline-block;">
+                                            <!-- <p-multiSelect [options]="columnOptions" [(ngModel)]="selectedColumns" ></p-multiSelect> -->
+                                        </div>
+                                        <div  style="display: inline-block;float: right;">
+                                            <input #opnGf type="text" pInputText size="20" placeholder="Search" >
+                                        </div>
+                                    </div>
+                                </header>
+                                <template let-row >
+                                    <div class="ui-grid ui-grid-responsive ui-fluid" style="font-size:16px;padding:20px">
+                                        <div class="ui-grid-row" *ngFor="let col of row | keysAndValues">
+                                            <div class="ui-grid-col-2">{{col.key}}</div>
+                                            <div class="ui-grid-col-10">{{col.value}}</div>
+                                        </div>
+                                    </div>
+                                </template>
+                                <p-column *ngFor="let col of selectedColumns" [field]="col" [header]="col" [sortable]="true" [filter]="true" filterMatchMode="contains">
+                                    <template let-row="rowData" *ngIf="col.indexOf('ExpectedReleaseDate')!=-1" pTemplate type="body">
+                                        <span>{{(row.ExpectedReleaseDate && row.ExpectedReleaseDate.length > 0) ? (row.ExpectedReleaseDate|date:"dd/MM/yyyy HH:mm"): '-' }}</span>
+                                    </template>
+                                    <template let-row="rowData" *ngIf="col.indexOf('LastReleaseDate')!=-1" pTemplate type="body">
+                                        <span>{{( row.LastReleaseDate && row.LastReleaseDate.length > 0) ? (row.LastReleaseDate|date:"dd/MM/yyyy HH:mm"): '-' }}</span>
+                                    </template>
+                                </p-column>
+                                <footer>{{totalCount}} Records</footer>
+                            
+                            </p-dataTable>
+                        </div>
+                        <p-messages [value]="userMsgs"></p-messages>
+                    </p-tabPanel>
+                    <p-tabPanel header="History" [selected]="isHistory">
+                        <div class="card">
+                            <div class="ui-grid ui-grid-responsive ui-fluid form-group">
+                                <div class="ui-grid-row">
+                                    <div class="ui-g-12 ui-md-2">
+                                        <label >Filter By</label>
+                                    </div>
+                                    <div class="ui-g-12 ui-md-6">
+                                        <div class="ui-g-12 ui-md-6">
+                                            <p-dropdown id="dropdown" [options]="filterOptions" [(ngModel)]="historyFilter.ERNSearchFilter" [autoWidth]="false"></p-dropdown>
+                                        </div>
+                                        <div class="ui-g-12 ui-md-6">
+                                            <span class="md-inputfield">
+                                            <input type="text" pInputText [(ngModel)]="historyFilter.FieldValue">
+                                            <label>Enter value</label>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-grid-row">
+                                    <div class="ui-g-12 ui-md-2">
+                                        <label >Date Range</label>
+                                    </div>
+                                    <div class="ui-g-12 ui-md-6">
+                                        <div class="ui-g-12 ui-md-6">
+                                            <p-calendar  placeholder="From Date" [(ngModel)]="historyFilter.FromDate"></p-calendar>
+                                        </div>
+                                        <div class="ui-g-12 ui-md-6">
+                                            <p-calendar  placeholder="To Date" [(ngModel)]="historyFilter.ToDate"></p-calendar>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-grid-row">
+                                    <div class="ui-g-12 ui-md-8 ">
+                                        <button pButton type="button" (click)="applyFilters()" style="width:auto" label="Search" class="pull-right" [disabled]="historyFilter.FieldValue.length == 0"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="historyList.length > 0">
+                            <p-dataTable [value]="historyList" [paginator]="true" [rows]="10" class="ern-row" (onRowClick)="viewERNDetail($event)" [globalFilter]="historyGf">
+                            <header>
+                                <div style="text-align: left;">
+                                    <div  style="display: inline-block;">
+                                        <!-- <p-multiSelect [options]="columnOptions" [(ngModel)]="selectedColumns" ></p-multiSelect> -->
+                                    </div>
+                                    <div  style="display: inline-block;float: right;">
+                                        <input #historyGf type="text" pInputText size="50" placeholder="Search">
+                                    </div>
+                                </div>
+                            </header>
+                            <template let-row >
+                                <div class="ui-grid ui-grid-responsive ui-fluid" style="font-size:16px;padding:20px">
+                                    <div class="ui-grid-row" *ngFor="let col of row | keysAndValues">
+                                        <div class="ui-grid-col-2">{{col.key}}</div>
+                                        <div class="ui-grid-col-10">{{col.value}}</div>
+                                    </div>
+                                </div>
+                            </template>
+                            <p-column *ngFor="let col of selectedColumns" [field]="col" [header]="col" [sortable]="true" [filter]="true" filterMatchMode="contains">
+                                <template let-row="rowData" *ngIf="col.indexOf('ExpectedReleaseDate')!=-1" pTemplate type="body">
+                                    <span>{{( row.ExpectedReleaseDate && row.ExpectedReleaseDate.length > 0) ? (row.ExpectedReleaseDate|date:"dd/MM/yyyy HH:mm"): '-' }}</span>
+                                </template>
+                                <template let-row="rowData" *ngIf="col.indexOf('LastReleaseDate')!=-1" pTemplate type="body">
+                                    <span>{{(row.LastReleaseDate && row.LastReleaseDate.length > 0) ? (row.LastReleaseDate|date:"dd/MM/yyyy HH:mm"): '-' }}</span>
+                                </template>
+                            </p-column>
+                            <footer>{{totalCount}} Records</footer>
+                            
+                            </p-dataTable>
+                        </div>
+                        
+                        <p-messages [value]="userMsgs"></p-messages>
+                    </p-tabPanel>
+                </p-tabView>
+            </div>
+        </div>
+    </div>
+</div>

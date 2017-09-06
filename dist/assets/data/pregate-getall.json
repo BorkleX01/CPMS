@@ -1,0 +1,53 @@
+{
+  "Success": true,
+  "Name": null,
+  "Description": null,
+  "Data": [{
+	"Id": "b4cc5bad-0fd3-431d-a451-ba3958605d71",
+	"PregateType": "SINGLE",
+	"CustomerId": "5568760e-c0ac-427d-9c20-e84fb258cf88",
+	"StartDate": "2015-02-20T11:00:00.0000000+11:00",
+    "EndDate": "2016-12-31T00:00:00.0000000+11:00",
+	"ApplyHold": true,
+	"ContainerNumber": "1STP0001017",
+	"ContainerNumberTo": null,
+	"Comments": "This is a sample single pre-gate condition",
+    "CreatedBy": "Username",
+    "CreatedDate": "2016-11-21T16:08:26.9890000+11:00",
+    "ModifiedBy": null,
+    "ModifiedDate": "",
+    "ArchiveStatus": null
+  },
+  {
+	"Id": "263e8271-e006-4413-8ab7-e4be980dc5af",
+	"PregateType": "RANGE",
+	"CustomerId": "9234db88-7626-495d-ab19-ae0aca17d5ce",
+	"StartDate": "2015-02-20T11:00:00.0000000+11:00",
+    "EndDate": "2016-12-31T00:00:00.0000000+11:00",
+	"ApplyHold": true,
+	"ContainerNumber": "1STP1111111",
+	"ContainerNumberTo": "1STP4444444",
+	"Comments": "This is a sample single pre-gate range condition",
+    "CreatedBy": "Username",
+    "CreatedDate": "2016-11-21T16:08:26.9890000+11:00",
+    "ModifiedBy": null,
+    "ModifiedDate": "",
+    "ArchiveStatus": null
+  },
+  {
+	"Id": "973ea8da-bddd-41c9-8401-27257c3f3cec",
+	"PregateType": "RANGE",
+	"CustomerId": "b6ac908e-39b6-422f-8b9a-3efb2d61fac5",
+    "StartDate": "2015-07-20T10:00:00.0000000+10:00",
+    "EndDate": "2017-07-25T10:00:00.0000000+10:00",
+	"ApplyHold": false,
+	"ContainerNumber": "AAAA0003470",
+	"ContainerNumberTo": "AAAA0003490",
+	"Comments": "This is a sample single pre-gate range condition",
+    "CreatedBy": "amikhail",
+    "CreatedDate": "2016-10-04T17:24:25.4820000+11:00",
+    "ModifiedBy": null,
+    "ModifiedDate": "",
+    "ArchiveStatus": null
+  }]
+}

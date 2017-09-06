@@ -1,0 +1,143 @@
+<div class="card car-w-title search-ern-container">
+    <div class="ui-g-12 ui-md-6 no-bottom-pad">
+        <h1>Pre-Gate</h1>
+    </div>
+    <div class="ui-g-12 ui-md-6 text-right no-bottom-pad">
+        <button pButton class="" label="Create Pre-Gate" routerLink="/createpregate" style="width:auto"></button>
+    </div>
+    <div class="ui-grid ui-grid-responsive ui-fluid form-group">
+        <div class="ui-grid-row ">
+            <div class="ui-g-12 ui-md-12">
+                <p-tabView  class="primeng-tab">
+                    <p-tabPanel header="Current" [selected]="!isHistory" >
+                        <div *ngIf="currentData.length > 0" >
+                            <p-dataTable  
+	                            [globalFilter]="openPregate" 
+	                            [value]="currentData" 
+	                            [paginator]="true" 
+	                            [rows]="10" 
+	                            resizableColumns="true" 
+	                            columnResizeMode="fit" 
+	                            reorderableColumns="true"
+	                            [responsive]="true" 
+	                            sortMode="single" 
+	                            selectionMode="single" 
+	                            #yidt 
+	                            [rowsPerPageOptions]="[10, 20, 30, 60, 90]"
+	                            (onRowDblclick)="viewDetail($event)">
+	                            <header>
+	                                <div style="text-align:left">
+	                                    <div style="display: inline-block;">
+	                                        <p-multiSelect [options]="columnOptions" [(ngModel)]="selectedColumns" #mSelector></p-multiSelect>
+	                                    </div>
+	                                    <div  style="display: inline-block;float: right;">
+	                                        <input #openPregate type="text" pInputText size="20" placeholder="Search">
+	                                    </div>
+	                                </div>
+	                            </header>
+	                            
+	                            <p-column *ngFor="let col of selectedColumns" [field]="col" [header]="col" [sortable]="true" [filter]="true" filterMatchMode="contains" [style]="{'white-space':'nowrap'}">
+		                            <template let-row="rowData" *ngIf="col.indexOf('StartDate')!=-1" pTemplate type="body">
+		                                <span>{{row.StartDate ? (row.StartDate|date:"dd/MM/yyyy"): '-' }}</span>
+		                            </template>
+		                            <template let-row="rowData" *ngIf="col.indexOf('EndDate')!=-1" pTemplate type="body">
+		                                <span>{{row.EndDate ? (row.EndDate|date:"dd/MM/yyyy"): '-' }}</span>
+		                            </template>
+		                            <template let-row="rowData" *ngIf="col.indexOf('ApplyHold')!=-1" pTemplate type="body">
+		                                <span>{{row.ApplyHold ? 'On Hold' : '' }}</span>
+		                            </template>
+	                            </p-column>
+	                            
+	                            <footer>{{totalCount}} Records</footer>
+                            </p-dataTable>
+                        </div>
+                        <p-messages [value]="userMsgs"></p-messages>
+                    </p-tabPanel>
+
+                    <p-tabPanel header="History" [selected]="isHistory" >
+
+                    	<div class="card">
+			                <div class="ui-grid ui-grid-responsive ui-fluid form-group">
+			                    
+			                    <div class="ui-grid-row">
+			                        <div class="ui-g-12 ui-md-1">
+			                            <label >Filter By</label>
+			                        </div>
+			                        <div class="ui-g-12 ui-md-6 ui-g-nopad">
+			                            <div class="ui-g-12 ui-md-6">
+			                            	<p-dropdown id="dropdown" [options]="pregateSearchOptions" [(ngModel)]="historyFilter.SearchField" [autoWidth]="false"></p-dropdown>    
+			                            </div>
+			                            <div class="ui-g-12 ui-md-6">                                
+			                                <span class="md-inputfield" *ngIf="historyFilter.SearchField != 'CUSTOMER_ID' ">
+				                                <input  type="text" pInputText [(ngModel)]="historyFilter.SearchValue">
+				                                <label>Enter value</label>
+			                                </span>
+			                                <p-dropdown *ngIf="historyFilter.SearchField == 'CUSTOMER_ID' "[options]="customerList" [(ngModel)]="historyFilter.SearchValue" [autoWidth]="false" ></p-dropdown>
+			                            </div>
+			                        </div>
+			                    </div>
+			                    <div class="ui-grid-row">
+			                        <div class="ui-g-12 ui-md-1">
+			                            <label >Date Range</label>
+			                        </div>
+			                        <div class="ui-g-12 ui-md-6 ui-g-nopad">
+			                            <div class="ui-g-12 ui-md-6">
+			                                <p-calendar  placeholder="From Date" [(ngModel)]="historyFilter.FromDate" dateFormat="yy/mm/dd"></p-calendar>
+			                            </div>
+			                            <div class="ui-g-12 ui-md-6">
+			                                <p-calendar  placeholder="To Date" [(ngModel)]="historyFilter.ToDate" dateFormat="yy/mm/dd"></p-calendar>
+			                            </div>
+			                        </div>
+			                    </div>
+
+			                    <div class="ui-grid-row">
+			                        <div class="ui-g-12 ui-md-7 ">
+			                            <button pButton type="button" (click)="searchHistory()" style="width:auto" label="Search" class="pull-right"></button>
+			                        </div>
+			                    </div>
+			                </div>
+			            </div>
+			            <div *ngIf="historyData.length > 0" class="inventory-table">
+			                <p-dataTable 
+			                    [globalFilter]="historyGf" 
+			                    [value]="historyData" 
+			                    [paginator]="true" 
+			                    [rows]="18" 
+			                    resizableColumns="true" 
+			                    columnResizeMode="fit" 
+			                    reorderableColumns="true"
+			                    [responsive]="true" 
+			                    sortMode="multiple" 
+			                    selectionMode="single" 
+			                    #hidt
+			                    (onRowDblclick)="viewDetail($event)"
+			                    [rowsPerPageOptions]="[10, 20, 30, 60, 90]">
+			                    <header>
+			                        <div style="text-align:left">
+			                            <div style="display: inline-block;">
+			                                <p-multiSelect [options]="columnOptions" [(ngModel)]="selectedColumns" #mSelector></p-multiSelect>
+			                            </div>
+			                            <div  style="display: inline-block;float: right;">
+			                                <input #historyGf type="text" pInputText size="50" placeholder="Global Filter" >
+			                            </div>
+			                        </div>
+			                    </header>
+				                <p-column *ngFor="let col of selectedColumns" [field]="col" [header]="col" [sortable]="true" [filter]="true" filterMatchMode="contains">
+				                    <template let-row="rowData" *ngIf="col.indexOf('StartDate')!=-1" pTemplate type="body">
+			                            <span>{{row.StartDate ? (row.StartDate|date:"dd/MM/yyyy"): '-' }}</span>
+			                        </template>
+			                        <template let-row="rowData" *ngIf="col.indexOf('EndDate')!=-1" pTemplate type="body">
+			                            <span>{{row.EndDate ? (row.EndDate|date:"dd/MM/yyyy"): '-' }}</span>
+			                        </template>
+				                </p-column>
+				                
+				                <footer>{{totalCount}} Records</footer>
+			                </p-dataTable>
+			            </div>
+			            <p-messages [value]="historyMsgs"></p-messages>
+                    </p-tabPanel>
+                </p-tabView>
+            </div>
+        </div>
+    </div>
+</div>

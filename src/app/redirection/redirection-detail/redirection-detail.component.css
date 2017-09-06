@@ -1,0 +1,51 @@
+.redirection-detail-section{
+	margin-bottom: 40px;
+}
+
+
+.redirection-button-grp button:first-child{
+	margin-right: 30px;
+}
+
+.redirection-button-grp button:last-child{
+	margin-left: 30px;
+}
+
+.redirection-type-button{
+	margin-right: 20px;
+    border-radius: 4px !important;
+    opacity: 1;
+}
+
+.redirection-type-button button:not(:first-child){
+	margin-left: 10px !important;
+}
+
+.redirection-type-button-active{
+	background-color: #2E9EDB !important;
+    border-color: #2E9EDB !important;
+    color: #fff;
+}
+
+.redirection-type{
+	display: block;
+}
+
+.type .ui-state-disabled {
+	opacity: 1 !important;
+}
+
+.redirection-detail-section label {
+	font-weight: bold;
+}
+
+
+@media (min-width: 768px){
+	.detail-height{
+		min-height: 160px;
+	}
+
+	.comments-height{
+		min-height: 225px;
+	}	
+}

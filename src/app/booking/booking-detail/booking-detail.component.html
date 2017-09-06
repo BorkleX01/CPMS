@@ -1,0 +1,252 @@
+<div class="card">
+    <div class="ui-grid ui-grid-responsive ui-fluid form-group">
+        <div class="ui-g-12">
+            <div class="ui-grid-row ">
+                <div class="ui-g-6 text-left">
+                    <button pButton style="width:auto" label="Back" (click)="goBack()"></button>
+                </div>
+                <div class="ui-g-12 ern-button-grp">
+                	<button pButton style="width:auto" label="{{getLabel()}}" (click)="processBooking()"></button>
+                    <button pButton style="width:auto" label="Edit" (click)="editConfirm = true" class="mid-button"></button>
+                    <button pButton style="width:auto" label="Delete" (click)="deleteConfirm = true"></button>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-g-12 ui-md-12 ">
+                    <div class="card card-w-title">
+                        <h1>Booking Details</h1>
+                        <div class="ui-grid-row">
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>Booking Id:</b></label>
+                                <div>{{bookingDetails.ExternalBookingId}}</div>
+                            </div>
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>Booking Ref No:</b></label> 
+                                <div>{{bookingDetails.ExternalBookingReferenceNo}}</div>
+                            </div>
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>Movement Type:</b></label>
+                                <div>{{ bookingDetails.MovementType }}</div>
+                            </div>
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>Status:</b></label> 
+                                <div>{{ bookingDetails.Status }}</div>
+                            </div>
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>Driver:</b></label> 
+                                <div>{{bookingDetails.DriverName}}</div>
+                            </div>
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>Rego:</b></label> 
+                                <div>{{bookingDetails.Rego}}</div>
+                            </div>
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>License No:</b></label> 
+                                <div>{{ bookingDetails.LicenseNo }}</div>
+                            </div>
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>Trailer Rego:</b></label> 
+                                <div>{{ bookingDetails.TrailerRego }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-g-12 ui-md-6 ">
+                    <div class="card card-w-title">
+                        <h1>Container Details</h1>
+                        <div class="ui-grid-row">
+                            <div class="ui-g-12 ui-md-4 ">
+                                <label><b>Container #:</b></label> 
+                                <div>{{bookingDetails.ContainerNo}}</div>
+                            </div>
+                            <div class="ui-g-12 ui-md-4 ">
+                                <label><b>Container Status:</b></label> 
+                                <div>{{bookingDetails.ContainerDefaultStatus}}</div>
+                            </div>                            
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>Customer Code:</b></label>
+                                <div>{{bookingDetails.CustomerCode}}</div>
+                            </div>
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>Customer Name:</b></label> 
+                                <div>{{bookingDetails.CustomerName}}</div>
+                            </div>
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>ISO Code:</b></label> 
+                                <div>{{bookingDetails.IsoCode}}</div>
+                            </div>
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>Grade:</b></label> 
+                                <div>{{bookingDetails.Lloyds}}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="ui-grid-row">
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>Gross Weight:</b></label> 
+                                <div>{{bookingDetails.GrossWeight}}</div>
+                            </div>
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>Tare Weight:</b></label> 
+                                <div>{{bookingDetails.TareWeight}}</div>
+                            </div>
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>Size:</b></label> 
+                                <div>{{bookingDetails.Size}}</div>
+                            </div>
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>Empty/ Laden:</b></label> 
+                                <div>{{bookingDetails.EmptyLaden}}</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="ui-g-12 ui-md-6 ">
+                    <div class="card card-w-title carrier-card">
+                        <h1>Carrier Details</h1>
+                        <div class="ui-grid-row">
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>Carrier Code:</b></label> 
+                                <div>{{bookingDetails.CarrierCode}}</div>
+                            </div>
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>Carrier Name:</b></label> 
+                                <div>Yet to come</div>
+                            </div>
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>Driver:</b></label> 
+                                <div>{{bookingDetails.DriverName}}</div>
+                            </div>
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>License No:</b></label> 
+                                <div>{{bookingDetails.LicenseNo}}</div>
+                            </div>
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>Rego:</b></label> 
+                                <div>{{bookingDetails.Rego}}</div>
+                            </div>
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>Trailer Rego:</b></label> 
+                                <div>{{bookingDetails.TrailerRego}}</div>
+                            </div>
+                        </div>
+                       
+                        <div class="ui-grid-row">
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>Vessel:</b></label> 
+                                <div>Yet to come</div>
+                            </div>
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>In Voyage?:</b></label> 
+                                <div>{{bookingDetails.InVoyage}}</div>
+                            </div>
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>Date:</b></label> 
+                                <div>{{bookingDetails.BookingDate | date:'dd-MMM-yyyy HH:mm'}}</div>
+                            </div>
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>Time Zone:</b></label> 
+                                <div>{{bookingDetails.TimeZone}}</div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="ui-grid-row ui-g-12 ui-md-12">
+                <div class="card card-w-title ui-g-12 ui-md-12">
+                    <h1>Additional Information</h1>
+                    <p-tabView>
+                        <p-tabPanel header="Alerts" leftIcon="ui-icon-warning">
+                            To be implemented.
+                        </p-tabPanel>
+                        <p-tabPanel header="Pre-Gate" leftIcon="ui-icon-near-me">
+                            To be implemented.
+                        </p-tabPanel>
+                        <p-tabPanel header="Leased" leftIcon="ui-icon-subscriptions">
+                            <div class="ui-grid-row">
+                                <div class="ui-g-12 ui-md-3">
+                                    <label><b>Lessee:</b></label> 
+                                    <div>{{bookingDetails.Lessee}}</div>
+                                </div>
+                                <div class="ui-g-12 ui-md-3">
+                                    <label><b>Lessee Name:</b></label> 
+                                    <div>{{bookingDetails.LesseName}}</div>
+                                </div>
+                                <div class="ui-g-12 ui-md-3">
+                                    <label><b>On Hire Date:</b></label> 
+                                    <div>{{ bookingDetails.OnHireDate? (bookingDetails.OnHireDate | date:'dd-MMM-yyyy HH:mm' ) : '-' }}</div>
+                                </div>
+                                <div class="ui-g-12 ui-md-3">
+                                    <label><b>Off Hire Date:</b></label> 
+                                    <div>{{ bookingDetails.OffHireDate? (bookingDetails.OffHireDate | date:'dd-MMM-yyyy HH:mm' ) : '-' }}</div>
+                                </div>
+                            </div>
+                        </p-tabPanel>
+                    </p-tabView>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p-dialog header="Confirm" [(visible)]="editConfirm" modal="modal" showEffect="fade" [closable]="false" responsive="true">
+	<p>You will now be redirected to an external site to make changes to your booking.</p>
+	<br>
+	<p>Do you wish to proceed?</p>
+	<footer>
+	   <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+	      <button type="button" pButton  (click)="editConfirm = false" label="No"></button>
+	      <button type="button" pButton  (click)="editBooking()" label="Yes"></button>
+	   </div>
+	</footer>
+</p-dialog>
+
+<p-dialog header="Confirm" [(visible)]="deleteConfirm" modal="modal" showEffect="fade" [closable]="false" responsive="true">
+	<p>This booking will now be deleted.</p>
+	<br>
+	<p>Do you wish to proceed?</p>
+	<footer>
+	   <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+	      <button type="button" pButton  (click)="deleteConfirm = false" label="No"></button>
+	      <button type="button" pButton  (click)="deleteBooking()" label="Yes"></button>
+	   </div>
+	</footer>
+</p-dialog>
+
+<p-dialog header="Gate out" [(visible)]="isGateOut" modal="modal" showEffect="fade" responsive="true" class="cpms-dialog">
+		<p>Enter the container number to gate out.</p>
+		<p-autoComplete [(ngModel)]="gateOutContainerNo" [suggestions]="filteredContainerList" (completeMethod)="filterContainers($event)" [minLength]="1"></p-autoComplete>
+		<footer>
+      <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+        <button type="button" pButton icon="fa-close" (click)="pickUp()" label="Ok" [disabled]="gateOutContainerNo.length == 0"></button>
+      </div>
+		</footer>
+</p-dialog>
+
+<p-dialog header="Success" [(visible)]="gateInSuccess" modal="modal" showEffect="fade" responsive="true" class="cpms-dialog">
+		<p>The container {{bookingDetails.ContainerNo}} has been gated in and is now in the inventory.</p>
+		<footer>
+	      	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+	        	<button type="button" pButton icon="fa-close" (click)="gateInSuccess=false" label="Ok"></button>
+	      	</div>
+		</footer>
+</p-dialog>
+
+<p-dialog header="Success" [(visible)]="gateOutSuccess" modal="modal" showEffect="fade" responsive="true" class="cpms-dialog">
+		<p>The container {{gateOutContainerNo}} has been gated out successfully.</p>
+		<footer>
+	      	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+	        	<button type="button" pButton icon="fa-close" (click)="gateOutSuccess=false" label="Ok"></button>
+	      	</div>
+		</footer>
+</p-dialog>

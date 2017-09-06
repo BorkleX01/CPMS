@@ -1,0 +1,14 @@
+.topbar-left{
+	padding-top: 8px !important;
+}
+
+.profile-name{
+	margin-top: 9px;
+	color: white !important;
+}
+
+@media (max-width: 1025px) {
+	.profile-name-show{
+		display: none;
+	}
+}

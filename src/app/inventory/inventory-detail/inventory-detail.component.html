@@ -1,0 +1,375 @@
+<div class="card">
+    <div class="ui-grid ui-grid-responsive ui-fluid form-group">
+        <div class="ui-g-12">
+            <div class="ui-grid-row ">
+                <div class="ui-g-6 text-left">
+                    <button pButton style="width:auto" label="Back" (click)="goBack()"></button>
+                </div>
+                <div class="ui-g-12 text-right">
+                	<!-- <button pButton style="width:auto" label="{{getLabel()}}" (click)="processBooking()"></button> -->
+                    <button pButton style="width:auto" *ngIf="( !containerDetails.GateOutDate || containerDetails.GateOutDate.length == 0 ) && !editEnabled" label="Edit" (click)="editDetail()" ></button>
+                    <button pButton style="width:auto" *ngIf="editEnabled" label="Submit" (click)="saveDetail()" ></button>
+                    <button pButton style="width:auto" *ngIf="editEnabled" label="Cancel" (click)="cancel()" ></button>
+                    <button pButton style="width:auto" label="Cancel Gate Out" *ngIf="isCancelGateOut"></button>
+                    <button pButton style="width:auto" label="Cancel Gate In" *ngIf="isCancelGateIn"></button>
+                </div>
+            </div>
+            <p-messages [value]="userMsgs"></p-messages> 
+            <div class="ui-grid-row">
+                <div class="ui-g-12 ui-md-9 ">
+                    <div class="card card-w-title ">
+                        <h1>Container Details</h1>
+                        <div class="ui-grid-row">
+                            <div class="ui-g-12 ui-md-3 ">
+                                <label><b>Container #:</b></label> 
+                                <div>{{containerDetails.ContainerNo}}</div>
+                            </div>
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>ISO Code:</b></label> 
+                                <div>{{containerDetails.IsoCode}}</div>
+                            </div>
+                            <div class="ui-g-12 ui-md-3 ">
+                                <label><b>Container Status:</b></label> 
+                                <div *ngIf="!editEnabled">{{containerDetails.Status}}</div>
+                                <p-dropdown id="dropdown" *ngIf="editEnabled" [options]="containerStatusOptions" [(ngModel)]="updatedDetails.Status" [autoWidth]="false"></p-dropdown>
+                            </div> 
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>Empty/ Laden:</b></label> 
+                                <div *ngIf="!editEnabled">{{containerDetails.EmptyLaden}}</div>
+                                <p-dropdown id="dropdown" *ngIf="editEnabled" [options]="containerTypeOptions" [(ngModel)]="updatedDetails.EmptyLaden" [autoWidth]="false"></p-dropdown>
+                            </div>                           
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>Customer Code:</b></label>
+                                <div>{{containerDetails.CustomerCode}}</div>
+                            </div>
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>Customer Name:</b></label> 
+                                <div>{{containerDetails.CustomerName}}</div>
+                            </div>
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>Customer No:</b></label> 
+                                <div>{{containerDetails.CustomerNo}}</div>
+                            </div>
+                             <div class="ui-g-12 ui-md-3">
+                                <label><b>Manufacture Date</b></label> 
+                                <div *ngIf="!editEnabled">{{containerDetails.ManufactureDate != null && containerDetails.ManufactureDate.length > 0? (containerDetails.ManufactureDate | date:'dd/MM/yyyy'): '-' }}</div>
+                                <p-calendar *ngIf="editEnabled"  [(ngModel)]="updatedDetails.ManufactureDate"></p-calendar>
+                            </div>
+                            
+                        </div>
+                        <div class="ui-grid-row">                            
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>Grade:</b></label> 
+                                <div *ngIf="!editEnabled">{{containerDetails.Grade}}</div>
+                                <input type="text" [(ngModel)]="updatedDetails.Grade" *ngIf="editEnabled" pInputText/>
+                            </div>
+
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>Rating:</b></label> 
+                                <div *ngIf="!editEnabled">{{containerDetails.Rating}}</div>
+                                <input type="text" [(ngModel)]="updatedDetails.Rating" *ngIf="editEnabled" pInputText/>
+                            </div>
+
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>Is Held:</b></label> 
+                                <p-checkbox [(ngModel)]="containerDetails.IsHeld" binary="true" *ngIf="!editEnabled" class="edit" disabled="true"></p-checkbox>
+                                <p-checkbox [(ngModel)]="updatedDetails.IsHeld" binary="true" *ngIf="editEnabled" class="edit"></p-checkbox>
+                            </div>
+
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>No: of days in park:</b></label> 
+                                <div>{{containerDetails.StorageDays}}</div>
+                            </div>
+                        </div> 
+                        <div class="ui-grid-row">
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>Size:</b></label> 
+                                <div>{{containerDetails.Size}}</div>
+                            </div>
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>Gross Weight:</b></label> 
+                                <div *ngIf="!editEnabled">{{containerDetails.GrossWeight}}</div>
+                                <input type="text" [(ngModel)]="updatedDetails.GrossWeight" *ngIf="editEnabled" pInputText/>
+                            </div>
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>Tare Weight:</b></label> 
+                                <div>{{containerDetails.TareWeight}}</div>
+                            </div>
+                            <div class="ui-g-12 ui-md-3">
+                                <label><b>Location in park:</b></label> 
+                                <div>{{containerDetails.Location}}</div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ui-g-12 ui-md-3 " >
+                    <div class="ui-grid-row">
+                        <div class="card ui-g-12">
+                            <div class="ui-grid-row">
+                                <div class="ui-g-12 ">
+                                    <label><b>Created By:</b></label>
+                                    <div>{{containerDetails.GatedInBy == null || containerDetails.GatedInBy.length == 0 ? '-' : containerDetails.GatedInBy + ' on '+ (containerDetails.GateInDate |date:'dd/MM/yyyy HH:mm')}}</div>
+                                </div>
+                            </div>
+                            <div class="ui-grid-row">
+                                <div class="ui-g-12 ">
+                                    <label><b>Last Changed By:</b></label>
+                                    <div>{{containerDetails.ModifiedBy == null || containerDetails.ModifiedBy.length == 0 ? '-' : containerDetails.ModifiedBy + ' on '+ (containerDetails.ModifiedDate|date:'dd/MM/yyyy HH:mm')}} </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+                
+            </div>
+            <div class="ui-grid-row ui-g-12 ui-md-12">
+                <div class="card card-w-title ui-g-12 ui-md-12">
+                    <h1>Additional Infomration</h1>
+                    <div class="ui-g-12 ui-md-12"> 
+                        <p-tabView (onChange)="onTabChange($event)">
+                            <p-tabPanel header="Alerts" leftIcon="ui-icon-warning">
+                                <div class="alerts-table">
+                                    <p-dataTable 
+                                        [value]="containerDetails.Alerts" 
+                                        columnResizeMode="fit" 
+                                        [responsive]="true" 
+                                        selectionMode="single" >
+
+                                        <p-column field="Message" header="Message"></p-column>
+                                        <p-column field="CreatedBy" header="CreatedBy"></p-column>
+                                        <p-column field="CreatedDate" header="CreatedDate">
+                                             <template let-row="rowData" pTemplate type="body">
+                                                <span>{{row.CreatedDate.length > 0 ? (row.CreatedDate|date:"dd/MM/yyyy HH:mm"): '-' }}</span>
+                                            </template>
+                                        </p-column>
+
+                                        <footer *ngIf="editEnabled && updatedDetails.AddedAlerts.length == 0">
+                                            <div class="ui-helper-clearfix" style="width:100%">
+                                                <button type="button" pButton icon="fa-plus" style="float:left;width:auto;" (click)="addAlert()" label="Add"></button>
+                                            </div>
+                                        </footer>
+                                    </p-dataTable>
+                                </div>
+                                <div class="alerts-table " *ngIf="updatedDetails.AddedAlerts.length > 0">
+                                    <p-dataTable 
+                                        [value]="updatedDetails.AddedAlerts" 
+                                        columnResizeMode="fit" 
+                                        [responsive]="true"  
+                                        [editable]="true"
+                                        class="primeng-table">
+
+                                        <p-column field="Message" [editable]="true"></p-column>
+
+                                        <p-column >
+                                            <template let-row="rowData" pTemplate type="body" >
+                                                <span>{{getUsername()}}</span>
+                                            </template>
+                                        </p-column>
+                                        
+                                        <p-column >
+                                             <template let-row="rowData" let-ri="rowIndex" pTemplate type="body">
+                                                <span>{{getDate()|date:"dd/MM/yyyy HH:mm"}}</span>
+                                                <span><i (click)="removeSpecification(ri)" class="material-icons">remove_circle</i></span>
+                                            </template>
+                                        </p-column>
+
+                                        <footer *ngIf="updatedDetails.AddedAlerts.length > 0">
+                                            <div class="ui-helper-clearfix" style="width:100%">
+                                                <button type="button" pButton icon="fa-plus" style="float:left;width:auto;" (click)="addAlert()" label="Add"></button>
+                                            </div>
+                                        </footer>
+                                    </p-dataTable>                                    
+                                </div>
+                            </p-tabPanel>
+                            <p-tabPanel header="Pre-Gate" leftIcon="ui-icon-near-me" *ngIf="containerDetails.PreGates && containerDetails.PreGates.length > 0">
+                               <div class="pregate-table">
+                                    <p-dataTable 
+                                        [value]="containerDetails.PreGates" 
+                                        columnResizeMode="fit" 
+                                        [responsive]="true" 
+                                        selectionMode="single" >
+
+                                        <p-column field="CreatedBy" header="CreatedBy"></p-column>
+                                        <p-column field="CreatedDate" header="CreatedDate">
+                                            <template let-row="rowData" pTemplate type="body">
+                                                <span>{{row.CreatedDate.length > 0 ? (row.CreatedDate|date:"dd/MM/yyyy HH:mm"): '-' }}</span>
+                                            </template>
+                                        </p-column>
+                                        <p-column field="Type" header="Source"></p-column>
+                                        <p-column field="IsHeld" header="IsHeld"></p-column>
+                                        <p-column field="Comments" header="Comments"></p-column>
+                                    </p-dataTable>
+                                </div>
+                            </p-tabPanel>
+                            <p-tabPanel header="Gate In" leftIcon="ui-icon-near-me" >
+                                <div class="ui-grid-row">
+                                    <div class="ui-g-12">                                   
+                                        <div class="ui-grid-row">
+                                            <div class="ui-g-12 ui-md-4">
+                                                <label><b>Carrier Code:</b></label> 
+                                                <div>{{gateInDetails.CarrierCode}}</div>
+                                            </div>
+                                            <div class="ui-g-12 ui-md-4">
+                                                <label><b>Carrier Name:</b></label> 
+                                                <div>Yet to come</div>
+                                            </div>
+                                            <div class="ui-g-12 ui-md-4">
+                                                <label><b>Driver:</b></label> 
+                                                <div>{{gateInDetails.DriverName}}</div>
+                                            </div>
+
+                                        </div>
+                                        <div class="ui-grid-row">
+                                            
+                                            <div class="ui-g-12 ui-md-4">
+                                                <label><b>License No:</b></label> 
+                                                <div>{{gateInDetails.LicenseNo}}</div>
+                                            </div>
+                                            <div class="ui-g-12 ui-md-4">
+                                                <label><b>Rego:</b></label> 
+                                                <div>{{gateInDetails.Rego}}</div>
+                                            </div>
+                                            <div class="ui-g-12 ui-md-4">
+                                                <label><b>Trailer Rego:</b></label> 
+                                                <div>{{gateInDetails.TrailerRego}}</div>
+                                            </div>
+                                        </div>
+                                        <div class="ui-grid-row">
+                                            <div class="ui-g-12 ui-md-4">
+                                                <label><b>Voyage No:</b></label> 
+                                                <div>{{gateInDetails.InVoyage}}</div>
+                                            </div>
+                                            <div class="ui-g-12 ui-md-4">
+                                                <label><b>Date:</b></label> 
+                                                <div>{{gateInDetails.BookingDate | date:'dd/MM/yyyy HH:mm'}}</div>
+                                            </div>
+                                            <div class="ui-g-12 ui-md-4">
+                                                <label><b>Time Zone:</b></label> 
+                                                <div>{{gateInDetails.TimeZone}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </p-tabPanel>
+                            <p-tabPanel header="Gate Out" leftIcon="ui-icon-near-me" *ngIf="containerDetails.GateOutDate && containerDetails.GateOutDate.length > 0">
+                                <div class="ui-grid-row">
+                                    <div class="ui-g-12">                                   
+                                        <div class="ui-grid-row">
+                                            <div class="ui-g-12 ui-md-4">
+                                                <label><b>Carrier Code:</b></label> 
+                                                <div>{{gateOutDetails.CarrierCode}}</div>
+                                            </div>
+                                            <div class="ui-g-12 ui-md-4">
+                                                <label><b>Carrier Name:</b></label> 
+                                                <div>Yet to come</div>
+                                            </div>
+                                            <div class="ui-g-12 ui-md-4">
+                                                <label><b>Driver:</b></label> 
+                                                <div>{{gateOutDetails.DriverName}}</div>
+                                            </div>
+
+                                        </div>
+                                        <div class="ui-grid-row">
+                                            
+                                            <div class="ui-g-12 ui-md-4">
+                                                <label><b>License No:</b></label> 
+                                                <div>{{gateOutDetails.LicenseNo}}</div>
+                                            </div>
+                                            <div class="ui-g-12 ui-md-4">
+                                                <label><b>Rego:</b></label> 
+                                                <div>{{gateOutDetails.Rego}}</div>
+                                            </div>
+                                            <div class="ui-g-12 ui-md-4">
+                                                <label><b>Trailer Rego:</b></label> 
+                                                <div>{{gateOutDetails.TrailerRego}}</div>
+                                            </div>
+                                        </div>
+                                        <div class="ui-grid-row">
+                                            <div class="ui-g-12 ui-md-4">
+                                                <label><b>Voyage No:</b></label> 
+                                                <div>{{gateOutDetails.InVoyage}}</div>
+                                            </div>
+                                            <div class="ui-g-12 ui-md-4">
+                                                <label><b>Date:</b></label> 
+                                                <div>{{gateOutDetails.BookingDate | date:'dd/MM/yyyy HH:mm'}}</div>
+                                            </div>
+                                            <div class="ui-g-12 ui-md-4">
+                                                <label><b>Time Zone:</b></label> 
+                                                <div>{{gateOutDetails.TimeZone}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </p-tabPanel>
+                            <p-tabPanel header="Leased" leftIcon="ui-icon-subscriptions">
+                                <div class="ui-grid-row">
+                                    <div class="ui-g-12 ui-md-2">
+                                        <label><b>Lessee:</b></label> 
+                                        <div *ngIf="!editEnabled">{{containerDetails.Lease.Lessee}}</div>
+                                        <input type="text" [(ngModel)]="updatedDetails.Lessee" *ngIf="editEnabled" pInputText/>
+                                    </div>
+                                    <div class="ui-g-12 ui-md-2">
+                                        <label><b>Lessee Name:</b></label> 
+                                        <div *ngIf="!editEnabled">{{containerDetails.Lease.LesseeName}}</div>
+                                        <input type="text" [(ngModel)]="updatedDetails.LesseeName" *ngIf="editEnabled" pInputText/>
+                                    </div>
+                                    <div class="ui-g-12 ui-md-2">
+                                        <label><b>On Hire Date:</b></label> 
+                                        <div *ngIf="!editEnabled">{{ containerDetails.Lease.OnHireDate? (containerDetails.Lease.OnHireDate | date:'dd/MM/yyyy HH:mm' ) : '-' }}</div>
+                                        <p-calendar *ngIf="editEnabled" [(ngModel)]="updatedDetails.OnHireDate"></p-calendar>
+                                    </div>
+                                    <div class="ui-g-12 ui-md-2">
+                                        <label><b>Off Hire Date:</b></label> 
+                                        <div *ngIf="!editEnabled">{{ containerDetails.Lease.OffHireDate? (containerDetails.Lease.OffHireDate | date:'dd/MM/yyyy HH:mm' ) : '-' }}</div>
+                                        <p-calendar *ngIf="editEnabled" [(ngModel)]="updatedDetails.OffHireDate"></p-calendar>
+                                    </div>
+                                    <div class="ui-g-12 ui-md-2">
+                                        <label><b>Sub Release No:</b></label> 
+                                        <div *ngIf="!editEnabled">{{ containerDetails.Lease.SubReleaseNo }}</div>
+                                        <input type="text" [(ngModel)]="updatedDetails.SubReleaseNo" *ngIf="editEnabled" pInputText/>
+                                    </div>
+                                </div>
+                            </p-tabPanel>
+                            <p-tabPanel header="Movement" leftIcon="ui-icon-near-me">
+                                <div class="movement-table">
+                                    <p-dataTable 
+                                        [value]="movementDetails" 
+                                        columnResizeMode="fit" 
+                                        [responsive]="true" 
+                                        selectionMode="single" >
+
+                                        <p-column field="EventCode" header="Status Code"></p-column>
+                                        <p-column field="EventDescription" header="Description"></p-column>
+                                        <p-column field="Username" header="Changed By"></p-column>
+                                        <p-column field="EventDate" header="Changed Date">
+                                            <template let-row="rowData" pTemplate type="body">
+                                                <span>{{row.EventDate.length > 0 ? (row.EventDate|date:"dd/MM/yyyy HH:mm"): '-' }}</span>
+                                            </template>
+                                        </p-column>
+                                    </p-dataTable>
+                                </div>
+                            </p-tabPanel>
+                        </p-tabView>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p-dialog header="Success" [(visible)]="saveSuccess" modal="modal" showEffect="fade" responsive="true">
+    <p>The details has been updated successfully.</p>
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+            <button type="button" pButton  (click)="closeDialog()" label="Ok"></button>
+        </div>
+</footer>
+

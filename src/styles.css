@@ -1,0 +1,80 @@
+/* You can add global styles to this file, and also import other style files */
+
+body .btn-primary {
+/*	background-color: #2E9EDB !important;
+	border-color: #2E9EDB !important;*/
+}
+
+body {
+	overflow: auto;
+}
+
+body .btn {
+	min-width: 115px;
+}
+
+.no-x-padding{
+	padding-left: 0px !important;
+	padding-right: 0px !important;
+}
+
+.row{
+	margin-bottom: 15px;
+}
+
+/*.ui-multiselect .ui-multiselect-trigger{
+	width: 24px !important;
+}
+
+.ui-multiselect {
+	width: 145px !important;
+}
+
+.primeng-tab  .ui-widget-header {
+	border: none !important;
+	border-bottom: 1px solid #DDDDDD !important;
+}
+
+.primeng-tab  .ui-tabview .ui-tabview-nav.ui-widget-header li {
+	border: none ;
+}
+*/
+.cpms-dialog .ui-autocomplete-panel{
+	position: initial !important;
+    overflow-y: scroll !important;
+    overflow-x: auto !important;
+}
+
+.p-menu div{
+	left: inherit !important;
+	top: inherit !important;
+	margin-left: 15px;
+    margin-top: 15px;
+}
+
+
+.no-top-pad{
+	padding-top: 0px !important;
+}
+
+.no-bottom-pad{
+	padding-bottom: 0px !important;
+}
+
+@media(min-width: 768px){
+	.std-height{
+		min-height: 720px;
+	}	
+}
+
+.primeng-tab .ui-tabview{
+	position: inherit !important;
+}
+
+.primeng-tab .ui-datatable table{
+	table-layout: auto !important;
+}
+
+.primeng-table .ui-datatable thead {
+   display: none
+}

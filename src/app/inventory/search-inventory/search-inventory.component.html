@@ -1,0 +1,202 @@
+<div class="card car-w-title search-ern-container">
+    <h1>Yard Inventory</h1>
+    <p-tabView  (onChange)="changeTab($event)" class="primeng-tab">
+        <p-tabPanel header="Current" [selected]="!isHistory" >
+           
+            <div *ngIf="tableData.length > 0" class="inventory-table">
+               
+                <p-dataTable 
+                    persistedStateId="inventoryTable" 
+                    [defaultState]="inventoryDefaultUISettings" 
+                    (onColumnVisibilityChange)="visChange($event)" 
+                    [globalFilter]="openInventory" 
+                    [value]="tableData" 
+                    [paginator]="true" 
+                    [rows]="10" 
+                    resizableColumns="true" 
+                    columnResizeMode="fit" 
+                    reorderableColumns="true"
+                    [responsive]="true" 
+                    sortMode="single" 
+                    selectionMode="single" 
+                    #yidt 
+                    (onRowDblclick)="viewContainerDetail($event)"
+                    [rowsPerPageOptions]="[10, 20, 30, 60, 90]">
+                        <header>
+                            <div style="text-align:left">
+                                <div style="display: inline-block;">
+                                    <p-multiSelect [options]="columnOptions" [(ngModel)]="selectedColumns" #mSelector></p-multiSelect>
+                                </div>
+                                <div  style="display: inline-block;float: right;">
+                                    <!-- <input #openInventory type="text" pInputText size="20" placeholder="Search"> -->
+                                </div>
+                            </div>
+                        </header>
+                        <p-column header="Select" [style]="{'overflow':'visible','width':'50px'}">
+                            <template let-row="rowData" pTemplate type="body" >
+                                <p-checkbox [(ngModel)]="row.checked" binary="true" (onChange)="selectRows(row, $event)"></p-checkbox>
+                            </template>
+                        </p-column>
+
+                        <p-column *ngFor="let col of selectedColumns" [field]="col" [header]="col" [sortable]="true" [filter]="true" filterMatchMode="contains" [style]="{'white-space':'nowrap'}">
+                            <template let-row="rowData" *ngIf="col.indexOf('GateInDate')!=-1" pTemplate type="body">
+                                <span>{{row.GateInDate ? (row.GateInDate|date:"dd/MM/yyyy HH:mm"): '-' }}</span>
+                            </template>
+
+                            <template let-row="rowData" *ngIf="col.indexOf('IsHeld')!=-1" pTemplate type="body">
+                                <span>{{row.IsHeld ? 'On Hold' : '' }}</span>
+                            </template>
+                        </p-column>
+
+                        <p-column header="More" [style]="{'overflow':'visible','width':'50px'}" >
+                            <template let-row="rowData" pTemplate type="body" >
+                                <p-menu #menu popup="popup" [model]="items" styleClass="more-menu"></p-menu>
+                                <button type="button" icon="ui-icon-dehaze" pButton (click)="menu.toggle($event);moreButtonClick(row)"></button>
+                            </template>
+                        </p-column>
+
+                        <footer>{{totalCount}} Records</footer>
+                </p-dataTable>
+            </div>
+            <p-messages [value]="userMsgs"></p-messages>
+        </p-tabPanel>
+        <p-tabPanel header="History" [selected]="isHistory">
+            <div class="card">
+                <div class="ui-grid ui-grid-responsive ui-fluid form-group">
+                    
+                    <div class="ui-grid-row">
+                        <div class="ui-g-12 ui-md-1">
+                            <label >Filter By</label>
+                        </div>
+                        <div class="ui-g-12 ui-md-6 ui-g-nopad">
+                            <div class="ui-g-12 ui-md-6">
+                            	<p-dropdown id="dropdown" [options]="containerSearchOptions" [(ngModel)]="historyFilter.ContainerSearchFilter" [autoWidth]="false" (onChange)="clearFieldValue()"></p-dropdown>    
+                            </div>
+                            <div class="ui-g-12 ui-md-6"  *ngIf="historyFilter.ContainerSearchFilter != 'CUSTOMER_ID'">                                
+                                <span class="md-inputfield">
+	                                <input type="text" pInputText [(ngModel)]="historyFilter.FieldValue">
+	                                <label>Enter value</label>
+                                </span>
+                            </div>
+                            <div class="ui-g-12 ui-md-6"  *ngIf="historyFilter.ContainerSearchFilter == 'CUSTOMER_ID'">                                
+                                <p-dropdown [options]="customerList" [(ngModel)]="historyFilter.FieldValue" [autoWidth]="false" ></p-dropdown>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ui-grid-row">
+                        <div class="ui-g-12 ui-md-1">
+                            <label >Date Range</label>
+                        </div>
+                        <div class="ui-g-12 ui-md-6 ui-g-nopad">
+                            <div class="ui-g-12 ui-md-6">
+                                <p-calendar  placeholder="From Date" [(ngModel)]="historyFilter.FromDate" dateFormat="dd/M/yy"></p-calendar>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <p-calendar  placeholder="To Date" [(ngModel)]="historyFilter.ToDate" dateFormat="dd/M/yy"></p-calendar>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ui-grid-row">
+                        <div class="ui-g-12 ui-md-7 ">
+                            <button pButton type="button" (click)="searchHistory()" style="width:auto" label="Search" class="pull-right" [disabled]="historyFilter.FromDate.length == 0 || historyFilter.ToDate.length == 0"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="historyData.length > 0" class="inventory-table">
+                <p-dataTable 
+                    [globalFilter]="historyGf" 
+                    [value]="historyData" 
+                    [paginator]="true" 
+                    [rows]="18" 
+                    resizableColumns="true" 
+                    columnResizeMode="fit" 
+                    reorderableColumns="true"
+                    [responsive]="true" 
+                    sortMode="multiple" 
+                    selectionMode="single" 
+                    #hidt
+                    (onRowDblclick)="viewContainerDetail($event)"
+                    [rowsPerPageOptions]="[10, 20, 30, 60, 90]">
+                        <header>
+                            <div style="text-align:left">
+                                <div style="display: inline-block;">
+                                    <p-multiSelect [options]="columnOptions" [(ngModel)]="selectedColumns" #mSelector></p-multiSelect>
+                                </div>
+                                <div  style="display: inline-block;float: right;">
+                                    <!-- <input #historyGf type="text" pInputText size="50" placeholder="Global Filter" > -->
+                                </div>
+                            </div>
+                        </header>
+                        <p-column *ngFor="let col of selectedColumns" [field]="col" [header]="col" [sortable]="true" [filter]="true" filterMatchMode="contains">
+                            <template let-row="rowData" *ngIf="col.indexOf('GateInDate')!=-1" pTemplate type="body">
+                                    <span>{{row.GateInDate ? (row.GateInDate|date:"dd/MM/yyyy HH:mm"): '-' }}</span>
+                                </template>
+                        </p-column>
+                        <p-column header="More" [style]="{'overflow':'visible','width':'50px'}" >
+                            <template let-row="rowData" pTemplate type="body" >
+                                <p-menu #menu popup="popup" [model]="items" styleClass="more-menu"></p-menu>
+                                <button type="button" icon="ui-icon-dehaze" pButton (click)="menu.toggle($event);moreButtonClick(row)"></button>
+                            </template>
+                        </p-column>
+                        <footer>{{totalCount}} Records</footer>
+                </p-dataTable>
+            </div>
+            <p-messages [value]="userMsgs"></p-messages>
+        </p-tabPanel>
+    </p-tabView>
+</div>
+
+<p-dialog header="Comments" [(visible)]="showComments" modal="modal" showEffect="fade" [closable]="false" width="360" responsive="true">
+    <p>Please provide your comments.</p>
+    <br>
+    <textarea rows="3" cols="40" [(ngModel)]="holdOrReleaseComments" pInputTextarea ></textarea>
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+            <button type="button" pButton  (click)="cancelHoldOrRelease();refresh()" label="Cancel"></button>
+            <button type="button" pButton  (click)="holdContainers()" label="Submit" [disabled]="holdOrReleaseComments.trim().length == 0"></button>
+        </div>
+    </footer>
+</p-dialog>
+
+<div class="custom-growl" *ngIf="!showMessage && containerIds.length > 1">
+    <div class="ui-growl ui-widget " style="z-index: 1000; opacity: 1.008;" >
+        <div aria-live="polite" class="ui-growl-item-container ui-state-highlight ui-corner-all ui-shadow ui-growl-message-info">
+            <div class="ui-growl-item">
+                <div class="ui-growl-message text-center">
+                    <button  type="button" pButton  (click)="doBulkHoldOrRelease()" label="{{getLabel()}}"></button>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="custom-growl" *ngIf="showMessage">
+    <div class="ui-growl ui-widget " style="z-index: 1000; opacity: 1.008;" >
+        <div aria-live="polite" class="ui-growl-item-container ui-state-highlight ui-corner-all ui-shadow ui-growl-message-info">
+            <div class="ui-growl-item">
+                <div class="ui-growl-message text-center">
+                    <p>Select records of same type. Either all to be released or all to be held.</p>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="custom-growl" *ngIf="holdSuccess">
+    <div class="ui-growl ui-widget " style="z-index: 1000; opacity: 1.008;" >
+        <div aria-live="polite" class="ui-growl-item-container ui-state-highlight ui-corner-all ui-shadow ui-growl-message-info">
+            <div class="ui-growl-item">
+                <div class="ui-growl-icon-close fa fa-close" (click)="holdSuccess = false"></div>
+                <div class="ui-growl-message text-center">
+                    <p>Selected containers have been updated.</p>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+        </div>
+    </div>
+</div>

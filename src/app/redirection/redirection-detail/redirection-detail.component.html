@@ -1,0 +1,163 @@
+<div class="card car-w-titleredirection-detail-container std-height">
+    <h1>Redirection Detail</h1>
+    <div class="ui-grid ui-grid-responsive ui-fluid form-group">
+        <div class="ui-g-12 ui-g-nopad">
+            <div class="ui-grid-row ">
+                <div class="ui-g-6 text-left">
+                    <button pButton style="width:auto" (click)="goBack()" label="Back"></button>
+                </div>
+                <div class="ui-g-6 text-right redirection-button-grp">
+                    <button pButton style="width:auto" *ngIf="!editEnabled && redirectionDetails.IsCreatedByFacility" (click)="editRedirection()" label="Edit"></button>
+                    <button pButton style="width:auto" *ngIf="editEnabled" (click)="saveRedirection()" label="Save"></button>
+                    <button pButton style="width:auto" *ngIf="redirectionDetails.IsCreatedByFacility" (click)="deleteConfirm = true" label="Delete"></button>
+                    <button pButton style="width:auto" *ngIf="editEnabled"(click)="cancel()" label="Cancel"></button>
+                </div>
+            </div>
+            <hr>
+            <div class="ui-grid-row">
+                <div class="ui-g-12 ui-md-6 ">
+                    <div class="card detail-height">
+                        <div class="ui-grid-row">
+                            <div class="ui-g-12 ui-md-6">
+                                <label ><b>Redirection Type</b></label>
+                                <div>
+                                    <p-selectButton [options]="redirectionType" [(ngModel)]="redirectionDetails.RedirectionType" disabled="true" styleClass="type" [style]="{'margin-top':'5px'}"></p-selectButton>
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-md-6" *ngIf="redirectionDetails.RedirectionType === 'BulkTimeBased'">
+                                <label><b>ISO Code</b></label>
+                                <div *ngIf="!editEnabled">{{redirectionDetails.ContainerISOCode == null ? "All" : redirectionDetails.ContainerISOCode}}
+                                    <span *ngIf="redirectionDetails.ContainerISOCode != null"> - TBC ISO description</span>
+                                </div>
+                                <input type="text" [(ngModel)]="updatedRedirection.ContainerISOCode" *ngIf="editEnabled" pInputText/>
+                            </div>
+                            <div class="ui-g-12 ui-md-6" *ngIf="redirectionDetails.RedirectionType === 'SingleContainer'">
+                                <label><b>Container Number</b></label>
+                                <div *ngIf="!editEnabled">{{redirectionDetails.ContainerNumber}}</div>
+                                <input type="text" [(ngModel)]="updatedRedirection.ContainerNumber" *ngIf="editEnabled" pInputText/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui-g-12 ui-md-6">
+                    <div class="card">
+                        <div class="ui-grid-row">
+                            <div class="ui-g-12 ui-md-6">
+                                <label><b>Created By:</b></label>
+                                <div>{{redirectionDetails.CreatedBy == null? '-': redirectionDetails.CreatedBy }}</div>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <label><b>Last Changed By:</b></label>
+                                <div>{{redirectionDetails.ModifiedBy == null? '-': redirectionDetails.ModifiedBy }}</div>
+                            </div>
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-g-12 ui-md-6">
+                                <label><b>Created Date:</b></label>
+                                <div>{{redirectionDetails.CreatedDate == ''? '-': redirectionDetails.CreatedDate }}</div>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <label><b>Last Changed Date:</b></label>
+                                <div>{{redirectionDetails.ModifiedDate == ''? '-': redirectionDetails.ModifiedDate }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-grid-row redirection-detail-section">
+                <div class="ui-g-12 ui-md-6">
+                    <div class="card">
+                        <div class="ui-grid-row">
+                            <div class="ui-g-12 ui-md-6">
+                                <label>Shipping Line Code</label>
+                                <div>{{redirectionDetails.ShippingLineCode}}</div>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <label>Shipping Line Name</label>
+                                <div>Yet to come</div>
+                            </div>
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-g-12 ui-md-6">
+                                <label>From Park</label>
+                                <div>{{redirectionDetails.FromFacilityCode}}</div>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <label>To Park</label>
+                                <div>{{redirectionDetails.ToFacilityCode}}</div>
+                            </div>
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-g-12 ui-md-6">
+                                <label>Start Date</label>
+                                <div *ngIf="!editEnabled">{{redirectionDetails.StartDate}}</div>
+                                <p-calendar  placeholder="Start Date" [(ngModel)]="updatedRedirection.StartDate" *ngIf="editEnabled"></p-calendar>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <label>End Date</label>
+                                <div *ngIf="!editEnabled">{{redirectionDetails.EndDate == "" ? "-": redirectionDetails.EndDate }}</div>
+                                <p-calendar  placeholder="End Date" [(ngModel)]="updatedRedirection.EndDate" *ngIf="editEnabled"></p-calendar>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui-g-12 ui-md-6">
+                    <div class="card comments-height">
+                        <div class="ui-grid-row">
+                            <div class="ui-g-12 ui-md-12">
+                                <label>Comments</label>
+                                <div *ngIf="!editEnabled">{{redirectionDetails.Comments}}</div>
+                                <textarea  *ngIf="editEnabled" [(ngModel)]="updatedRedirection.Comments" rows="8" maxlength="500" pInputTextarea placeholder="Comments"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<p-dialog header="Delete" [(visible)]="deleteConfirm" modal="modal" showEffect="fade" [closable]="false" width="360" responsive="true">
+    <p>This redirection will be deleted and moved to Archive.</p>
+    <br>
+    <p>Do you wish to proceed?</p>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+
+                <button type="button" pButton  (click)="deleteConfirm = false" label="No"></button>
+                <button type="button" pButton  (click)="deleteRedirection()" label="Yes"></button>
+            </div>
+
+        </footer>
+</p-dialog>
+
+<p-dialog header="Success" [(visible)]="deleteSuccess" modal="modal" showEffect="fade" width="450" responsive="true">
+    <p>The redirection has been deleted successfully.</p>
+    <p>The details of this redirection can now be viewed in the Redirection history.</p>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" pButton (click)="closeDialog()" label="Ok"></button>
+            </div>
+        </footer>
+</p-dialog>
+
+<p-dialog header="Success" [(visible)]="saveSuccess" modal="modal" showEffect="fade" responsive="true">
+    <p>The Redirection has been updated successfully.</p>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" pButton  (click)="closeDialog()" label="Ok"></button>
+            </div>
+        </footer>
+</p-dialog>
+
+<p-dialog header="Multiple Redirections" [(visible)]="isMultiple" modal="modal" showEffect="fade" responsive="true" [closable]="false" width="360">
+    <p>Multiple Redirections are not allowed.</p>
+    <p>An active redirection already exist.</p>
+    <p>Click <a (click)="redirectToDetail()">link</a> to view
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+            <button type="button" pButton icon="fa-close" (click)="isMultiple = false" label="Cancel"></button>
+        </div>
+    </footer>
+</p-dialog>

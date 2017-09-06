@@ -1,0 +1,335 @@
+<div class="card card-w-title std-height">
+    <h1>Pending Bookings</h1>
+    <div class="card">
+        <div class="ui-grid ui-grid-responsive ui-fluid form-group">
+            <!-- <div class="ui-grid-row">
+                <div class="ui-g-12 ui-md-2 ">
+                    <label >Filter By</label>
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-g-nopad">
+                    <div class="ui-g-12 ui-md-6">
+                        <p-dropdown id="dropdown" [options]="filterOptions" [(ngModel)]="filter.BookingSearchFilter" [autoWidth]="false"></p-dropdown>
+                    </div>
+                    <div class="ui-g-12 ui-md-6">
+                        <span class="md-inputfield">
+                        <input type="text" pInputText [(ngModel)]="filter.FieldValue">
+                        <label>Enter value</label>
+                        </span>
+                    </div>
+                </div>
+            </div> -->
+            <div class="ui-grid-row">
+                <div class="ui-g-12 ui-md-2">
+                    <label for="selectbutton">Movement Type</label>
+                </div>
+                <div class="ui-g-12 ui-md-6">
+                    <p-selectButton [options]="movementType" [(ngModel)]="filter.MovementTypeFilter"></p-selectButton>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-g-12 ui-md-2">
+                    <label for="selectbutton">Transactions for Today</label>
+                </div>
+                <div class="ui-g-12 ui-md-4">
+                    <!-- <p-inputSwitch [(ngModel)]="filter.TodayOnly"></p-inputSwitch> -->
+                    <p-checkbox [(ngModel)]="filter.TodayOnly" binary="true"></p-checkbox>
+                </div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-g-12 ui-md-8 ">
+                    <button pButton type="button" (click)="searchBookings(filter)" style="width:auto" label="Update Search" class="pull-right" ></button>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+	<div *ngIf="totalCount > 0">
+	    <p-dataTable persistedStateId="bookingTable" (onColumnVisibilityChange)="visChange($event)" [defaultState]="bookingsDefaultUIsettings" [value]="tableData"  [rowsPerPageOptions]="[10, 20, 30, 60, 90]" [paginator]="true" [rows]="30" columnResizeMode="fit" sortMode="multiple" resizableColumns="true" reorderableColumns="true" [responsive]="true" selectionMode="single" #podt (onRowDblclick)="viewBookingDetail($event)" paginatorPosition="top">
+	    <header>
+            <div style="text-align: left;">
+                <div  style="display: inline-block;">
+                    <p-multiSelect [options]="columnOptions" [(ngModel)]="selectedColumns" ></p-multiSelect>
+                </div>
+                <div  style="display: inline-block;float: right;">
+                    <input #openGf type="text" pInputText size="20" placeholder="Search">
+                </div>
+            </div>
+        </header>	    
+	    <!-- <p-growl [value]="growlMsgs" sticky="sticky"></p-growl> -->
+	    <p-column  *ngFor="let col of selectedColumns" [field]="col" [header]="col" [sortable]="true" [filter]="true" filterMatchMode="contains" [style]="{'white-space':'nowrap'}">
+		    <template let-row="rowData" *ngIf="col.indexOf('Date')!=-1" pTemplate type="body">
+		    	<span>{{row.BookingDate.length > 0 ? (row.BookingDate|date:"dd/MM/yyyy HH:mm"): '-' }}</span>
+		    </template>
+	    </p-column>
+	    <p-column header="More"  [style]="{'overflow':'visible','width':'51px'}">
+	        <template let-row="rowData" pTemplate type="body" >
+	            <p-menu #menu popup="popup" [model]="items" (menuHide)="menuHideFunction()"></p-menu>
+	            <button type="button" icon="ui-icon-dehaze" pButton (click)="menu.toggle($event);sButtonClick(row)"></button>
+	        </template>
+	    </p-column>
+	    <footer>{{totalCount}} Records</footer>
+	    </p-dataTable>
+	</div>
+	<p-messages [value]="userMsgs"></p-messages>
+</div>
+
+<p-dialog header="Gate out" [(visible)]="isGateOut" modal="modal" showEffect="fade" responsive="true" class="cpms-dialog">
+		<p>Enter the container number to gate out.</p>
+		<p-autoComplete [(ngModel)]="gateOutContainerNo" [suggestions]="filteredContainerList" (completeMethod)="filterContainers($event)" [minLength]="1"></p-autoComplete>
+		<footer>
+      <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+        <button type="button" pButton icon="fa-close" (click)="pickUp()" label="Ok" [disabled]="gateOutContainerNo.length == 0"></button>
+      </div>
+		</footer>
+</p-dialog>
+
+<p-dialog header="Confirm" [(visible)]="deleteConfirm" modal="modal" showEffect="fade" [closable]="false" responsive="true">
+	<p>This booking will now be deleted.</p>
+	<br>
+	<p>Do you wish to proceed?</p>
+	<footer>
+	   <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+	      <button type="button" pButton  (click)="deleteConfirm = false" label="No"></button>
+	      <button type="button" pButton  (click)="deleteBooking()" label="Yes"></button>
+	   </div>
+	</footer>
+</p-dialog>
+
+<p-dialog header="Success" [(visible)]="gateInSuccess" modal="modal" showEffect="fade" responsive="true" class="cpms-dialog">
+		<p>The container {{currentRecord.ContainerNo}} has been gated in and is now in the inventory.</p>
+		<footer>
+	      	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+	        	<button type="button" pButton icon="fa-check" (click)="gateInSuccess=false" label="Ok"></button>
+	      	</div>
+		</footer>
+</p-dialog>
+
+<p-dialog header="Success" [(visible)]="gateOutSuccess" modal="modal" showEffect="fade" responsive="true" class="cpms-dialog">
+		<p>The container {{gateOutContainerNo}} has been gated out successfully.</p>
+		<footer>
+	      	<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+	        	<button type="button" pButton icon="fa-check" (click)="gateOutSuccess=false" label="Ok"></button>
+	      	</div>
+		</footer>
+</p-dialog>
+
+<!--<p-overlayPanel #op3>
+		<p-menu [model]="items" ></p-menu>
+
+
+		reorderableColumns="true"
+
+</p-overlayPanel>-->
+
+
+
+<!-- ["Id", "ContainerNo", "ExternalBookingId", "ExternalBookingRefrenceNo", "BookingDay", "CarrierCode", "DriverName", "LicenseNo", "CustomerCode", "CustomerName", "CustomerNo", "CustomerId", "MovementType", "Rego", "TrailerRego", "ReleaseNo", "IsoCode", "User", "LastUser", "TimeZone", "GrossWeight", "TareWeight", "Status", "EmptyLaden", "CarrierAffiliation", "OnHireDate", "OffHireDate", "Lesse", "LesseName", "Lloyds", "InVoyage", "ContainerDefaultStatus", "ArrivalDate", "Size", "BookingDate"] -->
+<!--<p-contextMenu #cm [model]="items"></p-contextMenu>-->
+<!-- Status Id MovementType Rego TimeZone ContainerNo ReleaseNo IsoCode  -->
+
+<!--<div class="ui-grid-row">
+	  <div class="ui-grid-col-9">
+			<div class="ui-grid ui-grid-responsive ui-grid-pad">
+				<div class="ui-grid-row" >
+					<div class="ui-grid-col-2">Detail:</div>
+					<div class="ui-grid-col-10">{{row["Id"]}}</div>
+				</div>
+				<div class="ui-grid-row" >
+					<div class="ui-grid-col-2">Detail:</div>
+					<div class="ui-grid-col-10">{{row["ContainerNo"]}}</div>
+				</div>
+				<div class="ui-grid-row" >
+					<div class="ui-grid-col-2">Detail:</div>
+					<div class="ui-grid-col-10">{{row["ExternalBookingId"]}}</div>
+				</div>
+				<div class="ui-grid-row" >
+					<div class="ui-grid-col-2">Detail:</div>
+					<div class="ui-grid-col-10">{{row["ExternalBookingRefrenceNo"]}}</div>
+				</div>
+				<div class="ui-grid-row" >
+					<div class="ui-grid-col-2">Detail:</div>
+					<div class="ui-grid-col-10">{{row["BookingDay"]}}</div>
+				</div>
+				<div class="ui-grid-row" >
+					<div class="ui-grid-col-2">Detail:</div>
+					<div class="ui-grid-col-10">{{row["CarrierCode"]}}</div>
+				</div>
+				<div class="ui-grid-row" >
+					<div class="ui-grid-col-2">Detail:</div>
+					<div class="ui-grid-col-10">{{row["DriverName"]}}</div>
+				</div>
+				<div class="ui-grid-row" >
+					<div class="ui-grid-col-2">Detail:</div>
+					<div class="ui-grid-col-10">{{row["LicenseNo"]}}</div>
+				</div>
+				<div class="ui-grid-row" >
+					<div class="ui-grid-col-2">Detail:</div>
+					<div class="ui-grid-col-10">{{row["CustomerCode"]}}</div>
+				</div>
+				<div class="ui-grid-row" >
+					<div class="ui-grid-col-2">Detail:</div>
+					<div class="ui-grid-col-10">{{row["CustomerName"]}}</div>
+				</div>
+				<div class="ui-grid-row" >
+					<div class="ui-grid-col-2">Detail:</div>
+					<div class="ui-grid-col-10">{{row["CustomerNo"]}}</div>
+				</div>
+				<div class="ui-grid-row" >
+					<div class="ui-grid-col-2">Detail:</div>
+					<div class="ui-grid-col-10">{{row["CustomerId"]}}</div>
+				</div>
+				<div class="ui-grid-row" >
+					<div class="ui-grid-col-2">Detail:</div>
+					<div class="ui-grid-col-10">{{row["MovementType"]}}</div>
+				</div>
+				<div class="ui-grid-row" >
+					<div class="ui-grid-col-2">Detail:</div>
+					<div class="ui-grid-col-10">{{row["Rego"]}}</div>
+				</div>
+				<div class="ui-grid-row" >
+					<div class="ui-grid-col-2">Detail:</div>
+					<div class="ui-grid-col-10">{{row["TrailerRego"]}}</div>
+				</div>
+				<div class="ui-grid-row" >
+					<div class="ui-grid-col-2">Detail:</div>
+					<div class="ui-grid-col-10">{{row["ReleaseNo"]}}</div>
+				</div>
+				<div class="ui-grid-row" >
+					<div class="ui-grid-col-2">Detail:</div>
+					<div class="ui-grid-col-10">{{row["IsoCode"]}}</div>
+				</div>
+				<div class="ui-grid-row" >
+					<div class="ui-grid-col-2">Detail:</div>
+					<div class="ui-grid-col-10">{{row["User"]}}</div>
+				</div>
+			</div>
+    </div>
+
+	  <div class="ui-grid-col-9">
+			<div class="ui-grid ui-grid-responsive ui-grid-pad">
+				
+				<div class="ui-grid-row" >
+					<div class="ui-grid-col-2">Detail:</div>
+					<div class="ui-grid-col-10">{{row["LastUser"]}}</div>
+				</div>
+				<div class="ui-grid-row" >
+					<div class="ui-grid-col-2">Detail:</div>
+					<div class="ui-grid-col-10">{{row["TimeZone"]}}</div>
+				</div>
+				<div class="ui-grid-row" >
+					<div class="ui-grid-col-2">Detail:</div>
+					<div class="ui-grid-col-10">{{row["GrossWeight"]}}</div>
+				</div>
+				<div class="ui-grid-row" >
+					<div class="ui-grid-col-2">Detail:</div>
+					<div class="ui-grid-col-10">{{row["TareWeight"]}}</div>
+				</div>
+				<div class="ui-grid-row" >
+					<div class="ui-grid-col-2">Detail:</div>
+					<div class="ui-grid-col-10">{{row["Status"]}}</div>
+				</div>
+				<div class="ui-grid-row" >
+					<div class="ui-grid-col-2">Detail:</div>
+					<div class="ui-grid-col-10">{{row["EmptyLaden"]}}</div>
+				</div>
+				<div class="ui-grid-row" >
+					<div class="ui-grid-col-2">Detail:</div>
+					<div class="ui-grid-col-10">{{row["CarrierAffiliation"]}}</div>
+				</div>
+				<div class="ui-grid-row" >
+					<div class="ui-grid-col-2">Detail:</div>
+					<div class="ui-grid-col-10">{{row["OnHireDate"]}}</div>
+				</div>
+				<div class="ui-grid-row" >
+					<div class="ui-grid-col-2">Detail:</div>
+					<div class="ui-grid-col-10">{{row["OffHireDate"]}}</div>
+				</div>
+				<div class="ui-grid-row" >
+					<div class="ui-grid-col-2">Detail:</div>
+					<div class="ui-grid-col-10">{{row["Lesse"]}}</div>
+				</div>
+				<div class="ui-grid-row" >
+					<div class="ui-grid-col-2">Detail:</div>
+					<div class="ui-grid-col-10">{{row["LesseName"]}}</div>
+				</div>
+				<div class="ui-grid-row" >
+					<div class="ui-grid-col-2">Detail:</div>
+					<div class="ui-grid-col-10">{{row["Lloyds"]}}</div>
+				</div>
+				<div class="ui-grid-row" >
+					<div class="ui-grid-col-2">Detail:</div>
+					<div class="ui-grid-col-10">{{row["InVoyage"]}}</div>
+				</div>
+				<div class="ui-grid-row" >
+					<div class="ui-grid-col-2">Detail:</div>
+					<div class="ui-grid-col-10">{{row["ContainerDefaultStatus"]}}</div>
+				</div>
+				<div class="ui-grid-row" >
+					<div class="ui-grid-col-2">Detail:</div>
+					<div class="ui-grid-col-10">{{row["ArrivalDate"]}}</div>
+				</div>
+				<div class="ui-grid-row" >
+					<div class="ui-grid-col-2">Detail:</div>
+					<div class="ui-grid-col-10">{{row["Size"]}}</div>
+				</div>
+				<div class="ui-grid-row" >
+					<div class="ui-grid-col-2">Detail:</div>
+					<div class="ui-grid-col-10">{{row["BookingDate"]}}</div>
+				</div>
+				
+			</div>
+    </div>
+
+
+	  
+</div>-->
+
+
+<!--<p-column header="Status" field="Status" [sortable]="true" [filter]="true"></p-column>
+		<p-column header="Id" field="Id" [sortable]="true" [filter]="true"></p-column>
+		<p-column header="MovementType" field="MovementType" [sortable]="true" [filter]="true"></p-column>
+		<p-column header="Rego" field="Rego" [sortable]="true" [filter]="true"></p-column>
+		<p-column header="TimeZone" field="TimeZone" [sortable]="true" [filter]="true"></p-column>
+		<p-column header="ContainerID" field="ContainerID" [sortable]="true" [filter]="true"></p-column>
+		<p-column header="ReleaseNo" field="ReleaseNo" [sortable]="true" [filter]="true"></p-column>
+		<p-column header="IsoCode" field="IsoCode" [sortable]="true" [filter]="true"></p-column>-->
+
+<!-- <template let-row >
+        <div class="ui-grid ui-grid-responsive ui-fluid" style="font-size:16px;padding:20px">
+          
+					<div class="ui-grid-row" *ngFor="let col of row | keysAndValues">
+						<div class="ui-grid-col-2">{{col.key}}</div>
+						<div class="ui-grid-col-10">{{col.value}}</div>
+          </div>  Hand picked
+							 <div class="ui-g-12 ui-md-9">
+            		 <div class="ui-grid-row" >
+									 <div class="ui-g-12">Customer Name: {{row["CustomerName"]}}</div>
+								 </div>
+								 <div class="ui-grid-row" >
+									 <div class="ui-g-12">Customer No: {{row["CustomerNo"]}}</div>
+								 </div>
+								 <div class="ui-grid-row" >
+									 <div class="ui-g-12">Customer Id: {{row["CustomerId"]}}</div>
+								 </div>
+								 <div class="ui-grid-row" >
+									 <div class="ui-g-12">Container No: {{row["ContainerNo"]}}</div>
+								 </div>
+								 <div class="ui-grid-row" >
+									 <div class="ui-g-12">Booking Day: {{row["BookingDate"] | date:'dd-MMM-yyyy HH:MM:ss' }}</div>
+								 </div>
+								 <div class="ui-grid-row" >
+									 <div class="ui-g-12">Driver Name: {{row["DriverName"]}}</div>
+								 </div>
+								 <div class="ui-grid-row" >
+									 <div class="ui-g-12">License No: {{row["LicenseNo"]}}</div>
+								 </div>
+								 <div class="ui-grid-row" >
+									 <div class="ui-g-12">Trailer Rego: {{row["TrailerRego"]}}</div>
+								 </div>	            
+							 </div>
+          <div class="ui-g-12 ui-md-3">
+            <button pButton type="button" (click)="viewBookingDetail(row)" style="width:auto" label="View Detail" ></button>
+          </div>
+        </div>
+      </template> -->

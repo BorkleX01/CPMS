@@ -1,0 +1,133 @@
+<div class="card car-w-title create-redirection-container std-height">
+    <h1>Create New Redirection</h1>
+    <div class="ui-grid ui-grid-responsive ui-fluid form-group">
+        <div class="ui-g-12 ui-g-nopad">
+            <div class="ui-grid-row ">
+                <div class="ui-g-12 ui-md-6 text-left">
+                    <button pButton style="width:auto" (click)="goBack()" label="Back"></button>
+                </div>
+                <div class="ui-md-6 text-right redirection-button-grp">
+                    <button pButton style="width:auto" (click)="confirmRedirection()" label="Submit"></button>
+                    <button pButton style="width:auto" (click)="goBack()" label="Cancel"></button>
+                </div>
+            </div>
+            <hr>
+
+            <div class="ui-grid-row">
+                <div class="ui-g-12 ui-md-6 ">
+                    <div class="card redirection-detail-section">
+                        <div class="ui-grid-row">
+                            <div class="ui-g-12 ui-md-6">
+                                <label>Redirection Type</label>
+                                <div>
+                                    <p-selectButton [options]="redirectionType" [(ngModel)]="newRedirection.RedirectionType" styleClass="type" [style]="{'margin-top':'5px'}"></p-selectButton>
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-md-6" *ngIf="newRedirection.RedirectionType === 'BulkTimeBased'">
+                                <label>ISO Code</label>
+                                <input type="text" pInputText [(ngModel)]="newRedirection.ContainerISOCode" >
+                            </div>
+                            <div class="ui-g-12 ui-md-6" *ngIf="newRedirection.RedirectionType === 'SingleContainer'">
+                                <label>Container Number</label>
+                                <input type="text" pInputText [(ngModel)]="newRedirection.ContainerNumber" >
+                            </div>
+                        </div>
+                        <div class="ui-grid-row" *ngIf="newRedirection.RedirectionType === 'BulkTimeBased'">
+                            <div class="ui-g-12 ui-md-6 ">
+                            </div>
+                            <div class="ui-g-12 ui-md-6 " >
+                                <label>Description</label>
+                                <input type="text" pInputText value="ISO Description goes here" >
+                            </div>
+                        </div>
+                        <p-messages [value]="redirectionTypeMsgs"></p-messages>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="ui-grid-row">
+                <div class="ui-g-12 ui-md-6 ">
+                    <div class="card redirection-detail-section">
+                        <div class="ui-grid-row ">
+                            <div class="ui-g-12 ui-md-6">
+                                <label>Shipping Line Code</label>
+                                <input type="text" pInputText [(ngModel)]="newRedirection.ShippingLineCode" >
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <label>Shipping Line Name</label>
+                                <input type="text" pInputText value="Shipping Line Name goes here" >                                
+                            </div>
+                        </div>
+                        <div class="ui-grid-row ">
+                            <div class="ui-g-12 ui-md-6">
+                                <label>From Park</label>
+                                <input type="text" pInputText value="MCS - Tobe Auto populated based on logged in facility" >
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <label>To Park</label>
+                                <input type="text" pInputText [(ngModel)]="newRedirection.ToFacilityCode" >
+                            </div>
+                        </div>
+                        <div class="ui-grid-row ">
+                            <div class="ui-g-12 ui-md-6">
+                                <label>Start Date</label>
+                                <p-calendar  placeholder="Start Date" [(ngModel)]="newRedirection.StartDate"></p-calendar>
+                            </div>
+                            <div class="ui-g-12 ui-md-6">
+                                <label>End Date</label>
+                                <p-calendar  placeholder="End Date" [(ngModel)]="newRedirection.EndDate"></p-calendar>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ui-g-12 ui-md-6 ">
+                    <div class="card comments-height redirection-detail-section">
+                        <div class="ui-grid-row">
+                            <div class="ui-g-12 ui-md-12">
+                                <label>Comments</label>
+                                <textarea  [(ngModel)]="newRedirection.Comments" rows="8" maxlength="500" pInputTextarea placeholder="Comments"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>     
+            <p-messages [value]="userMsgs"></p-messages>            
+        </div>
+    </div>
+</div>
+
+<p-dialog header="Success" [(visible)]="createSuccess" modal="modal" showEffect="fade" responsive="true">
+	<p>The redirection has been successfully created.</p>
+	<footer>
+	    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+	        <button type="button" pButton icon="fa-close" (click)="createSuccess = false;goBack()" label="Ok"></button>
+	    </div>
+	</footer>
+</p-dialog>
+
+<p-dialog header="Confirm" [(visible)]="createConfirm" modal="modal" showEffect="fade" responsive="true" [closable]="false" width="360">
+	<p>You are recording a Re-Direction</p>
+	<p>From: MCS - Tobe Auto populated based on logged in facility </p>
+	<p>To: {{newRedirection.ToFacilityCode}}</p>
+	<br>
+	<p>Do you wish to proceed?</p>
+	<footer>
+	    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+	        <button type="button" pButton  (click)="createConfirm = false" label="No"></button>
+	        <button type="button" pButton  (click)="createRedirection()" label="Yes"></button>
+	    </div>
+	</footer>
+</p-dialog>
+
+<p-dialog header="Multiple Redirections" [(visible)]="isMultiple" modal="modal" showEffect="fade" responsive="true" [closable]="false" width="360">
+	<p>Multiple Redirections are not allowed.</p>
+	<p>An active redirection already exist.</p>
+	<p>Click <a (click)="redirectToDetail()">link</a> to view
+	<footer>
+	    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+	        <button type="button" pButton icon="fa-close" (click)="isMultiple = false" label="Cancel"></button>
+	    </div>
+	</footer>
+</p-dialog>

@@ -1,0 +1,57 @@
+{
+    "project": {
+	"version": "1.0.0-beta.15",
+	"name": "cpms"
+    },
+    "apps": [
+	{
+	    "root": "src",
+	    "outDir": "dist",
+	    "assets": ["assets"],
+	    "index": "index.html",
+	    "main": "main.ts",
+	    "test": "test.ts",
+	    "tsconfig": "tsconfig.json",
+	    "prefix": "app",
+	    "mobile": false,
+	    "styles": [
+		"styles.css",
+		"../node_modules/primeng/resources/layout/css/animate.css",	    
+		"../node_modules/primeng/resources/demo/css/fullcalendar.css",
+		"../node_modules/primeng/resources/primeng.css"
+	    ],
+	    "scripts": [
+		"../node_modules/jquery/dist/jquery.min.js",
+		"../node_modules/primeng/resources/demo/js/jquery.deps.js",
+		"../node_modules/primeng/resources/demo/js/Chart/dist/Chart.js",
+		"../node_modules/primeng/resources/layout/js/layout.js",
+		"../node_modules/primeng/resources/demo/js/moment.js",
+		"../node_modules/primeng/resources/demo/js/fullcalendar.js",
+		"../node_modules/primeng/resources/demo/js/quill.min.js"
+	    ],
+	    "environments": {
+		"source": "environments/environment.ts",
+		"dev": "environments/environment.dev.ts",
+		"prod": "environments/environment.prod.ts",
+		"20": "environments/environment.20.ts"
+	    }
+	}
+    ],
+    "addons": [],
+    "packages": [],
+    "e2e": {
+	"protractor": {
+	    "config": "./protractor.conf.js"
+	}
+    },
+    "test": {
+	"karma": {
+	    "config": "./karma.conf.js"
+	}
+    },
+    "defaults": {
+	"styleExt": "css",
+	"prefixInterfaces": false
+    }
+    
+}

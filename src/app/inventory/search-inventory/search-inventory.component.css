@@ -1,0 +1,34 @@
+.ui-grid-row {
+    font-size: small;
+}
+
+.custom-growl .ui-growl{
+	top: 120px;
+}
+
+@media (max-width: 768px){
+	.custom-growl .ui-growl{
+		right: 11%;
+	}
+}
+
+@media (min-width: 768px){
+	.custom-growl .ui-growl{
+		right: 40%;
+	}
+}
+
+.ui-growl-message-info{
+	background-color: #fff !important;
+}
+
+.custom-growl .ui-growl-message{
+	color: black;
+	width: auto;
+	float: none;
+}
+
+
+.more-menu .ui-menuitem-icon .fa {
+	color: inherit !important;
+}

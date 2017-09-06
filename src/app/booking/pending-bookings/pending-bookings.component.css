@@ -1,0 +1,14 @@
+
+.ui-grid-row {
+    font-size: small;
+}
+
+.ui-datatable {
+    font-family: 'Roboto', sans-serif;
+}
+
+.ui-autocomplete-panel{
+	position: initial !important;
+    overflow-y: scroll !important;
+    overflow-x: auto !important;
+}
